@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete AWB Printing Software</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="input-panel">
+            <h1>Complete AWB Data Entry</h1>
+            
+            <div class="form-tabs">
+                <button class="tab-button active" onclick="openTab('consignment-tab')">Consignment</button>
+                <button class="tab-button" onclick="openTab('parties-tab')">Parties</button>
+                <button class="tab-button" onclick="openTab('routing-tab')">Routing</button>
+                <button class="tab-button" onclick="openTab('goods-tab')">Goods</button>
+                <button class="tab-button" onclick="openTab('charges-tab')">Charges</button>
+                <button class="tab-button" onclick="openTab('special-tab')">Special</button>
+            </div>
+
+            <!-- CONSIGNMENT TAB -->
+            <div id="consignment-tab" class="tab-content active">
+                <h3>AWB Basic Information (Box 1A/1B)</h3>
+                <div class="row">
+                    <input type="text" id="awb-number" placeholder="AWB Number" maxlength="12">
+                    <input type="text" id="copy-type" placeholder="Copy Type" value="ORIGINAL" readonly>
+                </div>
+                
+                <div class="row">
+                    <input type="text" id="origin-iata" placeholder="Origin Airport (1)" maxlength="3">
+                    <input type="text" id="dest-iata" placeholder="Destination Airport (11A)" maxlength="3">
+                </div>
+
+                <h3>Agent Details (Box 6/7/8)</h3>
+                <div class="row">
+                    <input type="text" id="agent-iata" placeholder="Agent IATA Code (7)" maxlength="7">
+                    <input type="text" id="agent-cass" placeholder="CASS Code (4)" maxlength="4">
+                </div>
+                <input type="text" id="agent-name" placeholder="Agent Name (35)" maxlength="35">
+                <div class="row">
+                    <input type="text" id="agent-place" placeholder="Issuing Place (17)" maxlength="17">
+                    <input type="text" id="agent-account" placeholder="Account Number (8)" maxlength="9">
+                </div>
+            </div>
+
+            <!-- PARTIES TAB -->
+            <div id="parties-tab" class="tab-content">
+                <h3>Shipper Details (SHP)</h3>
+                <div class="row">
+                    <input type="text" id="shipper-account" placeholder="Account Number (9)" maxlength="9">
+                </div>
+                <input type="text" id="shipper-name" placeholder="Name (35)" maxlength="35">
+                <input type="text" id="shipper-address" placeholder="Street Address (35)" maxlength="35">
+                <div class="row">
+                    <input type="text" id="shipper-city" placeholder="City (17)" maxlength="17">
+                    <input type="text" id="shipper-state" placeholder="State (9)" maxlength="9">
+                </div>
+                <div class="row">
+                    <input type="text" id="shipper-country" placeholder="Country Code (2)" maxlength="2">
+                    <input type="text" id="shipper-postal" placeholder="Postal Code (9)" maxlength="9">
+                </div>
+                <div class="row">
+                    <input type="text" id="shipper-contact" placeholder="Contact ID (9)" maxlength="9">
+                    <input type="text" id="shipper-phone" placeholder="Phone (25)" maxlength="25">
+                </div>
+
+                <h3>Consignee Details (CNE)</h3>
+                <div class="row">
+                    <input type="text" id="consignee-account" placeholder="Account Number (4)" maxlength="9">
+                </div>
+                <input type="text" id="consignee-name" placeholder="Name (35)" maxlength="35">
+                <input type="text" id="consignee-address" placeholder="Street Address (35)" maxlength="35">
+                <div class="row">
+                    <input type="text" id="consignee-city" placeholder="City (17)" maxlength="17">
+                    <input type="text" id="consignee-state" placeholder="State (9)" maxlength="9">
+                </div>
+                <div class="row">
+                    <input type="text" id="consignee-country" placeholder="Country Code (2)" maxlength="2">
+                    <input type="text" id="consignee-postal" placeholder="Postal Code (9)" maxlength="9">
+                </div>
+
+                <h3>Accounting Information (ACC - Box 10)</h3>
+                <input type="text" id="accounting-info" placeholder="Accounting Information (34)" maxlength="34">
+            </div>
+
+            <!-- ROUTING TAB -->
+            <div id="routing-tab" class="tab-content">
+                <h3>Flight Details (FLT - Box 19A/19B)</h3>
+                <div class="row">
+                    <input type="text" id="carrier-code" placeholder="Carrier Code (2)" maxlength="2">
+                    <input type="text" id="flight-number" placeholder="Flight Number (5)" maxlength="5">
+                    <input type="date" id="flight-date">
+                </div>
+
+                <h3>Routing Information (RTG - Box 11B/11D/11F)</h3>
+                <div class="row">
+                    <input type="text" id="routing-to1" placeholder="To (Airport)" maxlength="3">
+                    <input type="text" id="routing-by1" placeholder="By (Carrier)" maxlength="2">
+                </div>
+                <div class="row">
+                    <input type="text" id="routing-to2" placeholder="To (Airport)" maxlength="3">
+                    <input type="text" id="routing-by2" placeholder="By (Carrier)" maxlength="2">
+                </div>
+                <div class="row">
+                    <input type="text" id="routing-to3" placeholder="To (Airport)" maxlength="3">
+                    <input type="text" id="routing-by3" placeholder="By (Carrier)" maxlength="2">
+                </div>
+
+                <h3>Reference Information</h3>
+                <input type="text" id="reference-no" placeholder="Reference Number (17)" maxlength="17">
+            </div>
+
+            <!-- GOODS TAB -->
+            <div id="goods-tab" class="tab-content">
+                <h3>Goods Details - Section 22</h3>
+                <div class="row">
+                    <label>Number of Rate Lines Needed:</label>
+                    <select id="rate-lines-count" onchange="createRateLines()">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+
+                <div id="rate-lines-container">
+                    <!-- Dynamic rate lines will be inserted here -->
+                </div>
+
+                <div class="totals-section">
+                    <h4>Totals</h4>
+                    <div class="row">
+                        <input type="text" id="total-pieces-22j" placeholder="22J - Total Pieces" readonly>
+                        <input type="text" id="total-weight-22k" placeholder="22K - Total Weight" readonly>
+                        <input type="text" id="total-charge-22l" placeholder="22L - Total Charge" readonly>
+                    </div>
+                </div>
+
+                <h3>Dimensions & Volume Calculation (22I)</h3>
+                <div class="dimensions-section">
+                    <div class="row">
+                        <input type="number" id="dim-length" placeholder="Length (cm)" step="0.1" onchange="calculateVolume()">
+                        <input type="number" id="dim-width" placeholder="Width (cm)" step="0.1" onchange="calculateVolume()">
+                        <input type="number" id="dim-height" placeholder="Height (cm)" step="0.1" onchange="calculateVolume()">
+                    </div>
+                    <div class="row">
+                        <input type="number" id="dim-pieces" placeholder="Number of Pieces" onchange="calculateVolume()">
+                        <input type="text" id="volume-result" placeholder="Volume (CBM)" readonly>
+                    </div>
+                </div>
+
+                <h3>Nature and Quantity of Goods (22I)</h3>
+                <textarea id="goods-description" placeholder="Description of goods including dimensions..." maxlength="220"></textarea>
+            </div>
+
+            <!-- CHARGES TAB -->
+            <div id="charges-tab" class="tab-content">
+                <h3>Charge Declaration (CVD)</h3>
+                <div class="row">
+                    <select id="currency-code" onchange="updateCurrencySymbols()">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="SGD">SGD - Singapore Dollar</option>
+                        <option value="AED">AED - UAE Dirham</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                    </select>
+                </div>
+
+                <h3>Prepaid Charges</h3>
+                <div class="charges-grid">
+                    <div class="charge-item">
+                        <label>Weight Charge Prepaid</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="weight-charge-pp" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Valuation Charge Prepaid</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="valuation-charge-pp" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Tax Prepaid</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="tax-pp" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Other Charges Due Agent (Prepaid)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="agent-charges-pp" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Other Charges Due Carrier (Prepaid)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="carrier-charges-pp" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item total">
+                        <label>Total Prepaid Charges</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="text" id="total-prepaid" placeholder="0.00" readonly class="total-field">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Collect Charges</h3>
+                <div class="charges-grid">
+                    <div class="charge-item">
+                        <label>Weight Charge Collect</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="weight-charge-cc" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Valuation Charge Collect</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="valuation-charge-cc" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Tax Collect</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="tax-cc" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Other Charges Due Agent (Collect)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="agent-charges-cc" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item">
+                        <label>Other Charges Due Carrier (Collect)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="carrier-charges-cc" placeholder="0.00" step="0.01" onchange="calculateTotals()">
+                        </div>
+                    </div>
+                    <div class="charge-item total">
+                        <label>Total Collect Charges</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="text" id="total-collect" placeholder="0.00" readonly class="total-field">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Other Charge Information</h3>
+                <div class="row">
+                    <input type="text" id="value-carriage" placeholder="Declared Value for Carriage" value="NVD">
+                    <input type="text" id="value-customs" placeholder="Declared Value for Customs" value="NCV">
+                </div>
+                <div class="row">
+                    <input type="text" id="insurance-field" placeholder="Amount of Insurance" value="XXX">
+                </div>
+
+                <h3>Certification</h3>
+                <div class="row">
+                    <input type="text" id="shipper-certification" placeholder="Shipper's Certification (31)" maxlength="20">
+                    <input type="text" id="carrier-execution" placeholder="Carrier's Execution (32C)" maxlength="20">
+                </div>
+            </div>
+
+            <!-- SPECIAL TAB -->
+            <div id="special-tab" class="tab-content">
+                <h3>Special Handling Codes (SPH)</h3>
+                <select id="special-handling">
+                    <option value="">Select Special Handling Code</option>
+                    <option value="EAW">EAW - No Document Pouch</option>
+                    <option value="EAP">EAP - With Document Pouch</option>
+                    <option value="ECC">ECC - No Paper AWB</option>
+                    <option value="ECP">ECP - Paper AWB Required</option>
+                    <option value="PER">PER - Perishable</option>
+                    <option value="AVI">AVI - Live Animals</option>
+                    <option value="VAL">VAL - Valuable</option>
+                    <option value="HUM">HUM - Human Remains</option>
+                </select>
+
+                <h3>Special Service Request (SSR)</h3>
+                <textarea id="ssr-info" placeholder="Special Service Request" maxlength="195"></textarea>
+                
+                <h3>Other Service Information (OSI)</h3>
+                <textarea id="osi-info" placeholder="Other Service Information" maxlength="195"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="updatePreview()">Update Preview</button>
+                <button onclick="generateFWB()">Generate FWB Message</button>
+                <button onclick="printAWB()" class="print-btn">Print AWB</button>
+                <button onclick="clearForm()">Clear Form</button>
+            </div>
+
+            <div id="fwb-output" class="fwb-output" style="display: none;">
+                <h3>FWB Message Output</h3>
+                <textarea id="fwb-message" readonly></textarea>
+                <button onclick="copyFWB()">Copy FWB Message</button>
+            </div>
+        </div>
+
+        <div class="preview-panel">
+            <h2>AWB Preview</h2>
+            <div id="awb-preview">
+                <!-- AWB preview will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
