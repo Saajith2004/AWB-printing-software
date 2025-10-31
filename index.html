@@ -12,12 +12,12 @@
             <h1>Complete AWB Data Entry</h1>
             
             <div class="form-tabs">
-                <button class="tab-button active" onclick="openTab(event, 'consignment-tab')">Consignment</button>
-                <button class="tab-button" onclick="openTab(event, 'parties-tab')">Parties</button>
-                <button class="tab-button" onclick="openTab(event, 'routing-tab')">Routing</button>
-                <button class="tab-button" onclick="openTab(event, 'goods-tab')">Goods</button>
-                <button class="tab-button" onclick="openTab(event, 'charges-tab')">Charges</button>
-                <button class="tab-button" onclick="openTab(event, 'special-tab')">Special</button>
+                <button class="tab-button active" data-tab="consignment-tab">Consignment</button>
+                <button class="tab-button" data-tab="parties-tab">Parties</button>
+                <button class="tab-button" data-tab="routing-tab">Routing</button>
+                <button class="tab-button" data-tab="goods-tab">Goods</button>
+                <button class="tab-button" data-tab="charges-tab">Charges</button>
+                <button class="tab-button" data-tab="special-tab">Special</button>
             </div>
 
             <!-- CONSIGNMENT TAB -->
@@ -28,33 +28,35 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="awb-number">AWB Number</label>
+                    <label for="awb-number">AWB Number (Box 1A/1B)</label>
                     <input type="text" id="awb-number" placeholder="e.g., 618-12345675" maxlength="12">
                 </div>
 
-                <div class="form-group">
-                    <label for="origin-iata">Origin Airport</label>
-                    <input type="text" id="origin-iata" placeholder="e.g., BLR" maxlength="3">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="origin-iata">Origin Airport (Box 1)</label>
+                        <input type="text" id="origin-iata" placeholder="e.g., BLR" maxlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="dest-iata">Destination Airport (Box 11A)</label>
+                        <input type="text" id="dest-iata" placeholder="e.g., SIN" maxlength="3">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="dest-iata">Destination Airport</label>
-                    <input type="text" id="dest-iata" placeholder="e.g., SIN" maxlength="3">
-                </div>
-
-                <div class="form-group">
-                    <label for="agent-name">Agent Name</label>
+                    <label for="agent-name">Agent Name (Box 6)</label>
                     <input type="text" id="agent-name" placeholder="Agent company name" maxlength="35">
                 </div>
 
-                <div class="form-group">
-                    <label for="agent-iata">Agent IATA Code</label>
-                    <input type="text" id="agent-iata" placeholder="e.g., 1234567" maxlength="7">
-                </div>
-
-                <div class="form-group">
-                    <label for="agent-account">Agent Account No</label>
-                    <input type="text" id="agent-account" placeholder="Account number" maxlength="9">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="agent-iata">Agent IATA Code (Box 7)</label>
+                        <input type="text" id="agent-iata" placeholder="e.g., 1234567" maxlength="7">
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-account">Agent Account No (Box 8)</label>
+                        <input type="text" id="agent-account" placeholder="Account number" maxlength="9">
+                    </div>
                 </div>
             </div>
 
@@ -66,7 +68,7 @@
                 </div>
 
                 <div class="section-group">
-                    <h4>Shipper Information</h4>
+                    <h4>Shipper Information (Box 3)</h4>
                     <div class="form-group">
                         <label for="shipper-name">Shipper Name</label>
                         <input type="text" id="shipper-name" placeholder="Company name" maxlength="35">
@@ -89,13 +91,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="shipper-account">Shipper Account No</label>
+                        <label for="shipper-account">Shipper Account No (Box 9)</label>
                         <input type="text" id="shipper-account" placeholder="Account number" maxlength="9">
                     </div>
                 </div>
 
                 <div class="section-group">
-                    <h4>Consignee Information</h4>
+                    <h4>Consignee Information (Box 5)</h4>
                     <div class="form-group">
                         <label for="consignee-name">Consignee Name</label>
                         <input type="text" id="consignee-name" placeholder="Company name" maxlength="35">
@@ -118,13 +120,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="consignee-account">Consignee Account No</label>
+                        <label for="consignee-account">Consignee Account No (Box 4)</label>
                         <input type="text" id="consignee-account" placeholder="Account number" maxlength="9">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="accounting-info">Accounting Information</label>
+                    <label for="accounting-info">Accounting Information (Box 10)</label>
                     <textarea id="accounting-info" placeholder="Payment instructions..." maxlength="34"></textarea>
                 </div>
             </div>
@@ -136,14 +138,15 @@
                     <button class="clear-tab-btn" onclick="clearCurrentTab()">Clear This Tab</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="carrier-code">Carrier Code</label>
-                    <input type="text" id="carrier-code" placeholder="e.g., SQ" maxlength="2">
-                </div>
-
-                <div class="form-group">
-                    <label for="flight-number">Flight Number</label>
-                    <input type="text" id="flight-number" placeholder="e.g., 512" maxlength="5">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="carrier-code">Carrier Code (Box 19A)</label>
+                        <input type="text" id="carrier-code" placeholder="e.g., SQ" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="flight-number">Flight Number (Box 19B)</label>
+                        <input type="text" id="flight-number" placeholder="e.g., 512" maxlength="5">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -152,7 +155,7 @@
                 </div>
 
                 <div class="section-group">
-                    <h4>Routing Information</h4>
+                    <h4>Routing Information (Box 11B/11D/11F)</h4>
                     <div class="row">
                         <div class="form-group">
                             <label for="routing-to1">To (Airport)</label>
@@ -192,32 +195,32 @@
                     
                     <div class="rate-table">
                         <div class="rate-header">
-                            <div>Pieces</div>
-                            <div>Gross Weight</div>
-                            <div>Unit</div>
-                            <div>Rate Class</div>
-                            <div>Commodity</div>
-                            <div>Charge Weight</div>
-                            <div>Rate/Charge</div>
-                            <div>Total</div>
+                            <div>Pieces (22A)</div>
+                            <div>Gross Weight (22B)</div>
+                            <div>Unit (22C)</div>
+                            <div>Rate Class (22D)</div>
+                            <div>Commodity (22E)</div>
+                            <div>Charge Weight (22F)</div>
+                            <div>Rate/Charge (22G)</div>
+                            <div>Total (22H)</div>
                             <div>Action</div>
                         </div>
                         <div id="rate-lines-container">
                             <!-- Dynamic rate lines will appear here -->
                         </div>
                         <div class="rate-totals">
-                            <div>Total Pieces:</div>
+                            <div>22J - Total Pieces:</div>
                             <div id="total-pieces-display">0</div>
-                            <div>Total Weight:</div>
+                            <div>22K - Total Weight:</div>
                             <div id="total-weight-display">0.0</div>
-                            <div>Total Charge:</div>
+                            <div>22L - Total Charge:</div>
                             <div id="total-charge-display">0.00</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="section-group">
-                    <h4>Dimensions & Volume</h4>
+                    <h4>Dimensions & Volume (22I)</h4>
                     <div class="dimension-controls">
                         <button onclick="addDimensionLine()" class="add-line-btn">+ Add Dimension Line</button>
                         <span class="line-count">Lines: <span id="dimension-line-count">1</span></span>
@@ -243,7 +246,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="goods-description">Nature and Quantity of Goods</label>
+                    <label for="goods-description">Nature and Quantity of Goods (22I)</label>
                     <textarea id="goods-description" placeholder="Description of goods..." maxlength="220"></textarea>
                 </div>
             </div>
@@ -284,12 +287,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="value-carriage">Declared Value for Carriage</label>
+                    <label for="value-carriage">Declared Value for Carriage (Box 13A)</label>
                     <input type="text" id="value-carriage" placeholder="NVD" value="NVD">
                 </div>
 
                 <div class="form-group">
-                    <label for="value-customs">Declared Value for Customs</label>
+                    <label for="value-customs">Declared Value for Customs (Box 13B)</label>
                     <input type="text" id="value-customs" placeholder="NCV" value="NCV">
                 </div>
             </div>
@@ -312,7 +315,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="handling-info">Handling Information</label>
+                    <label for="handling-info">Handling Information (Box 15)</label>
                     <textarea id="handling-info" placeholder="Special handling instructions..."></textarea>
                 </div>
 
@@ -330,7 +333,7 @@
                 <button onclick="clearAllTabs()" class="clear-btn">Clear All</button>
             </div>
 
-            <div id="fwb-output" class="fwb-output">
+            <div id="fwb-output" class="fwb-output" style="display: none;">
                 <h3>FWB Message</h3>
                 <textarea id="fwb-message" readonly></textarea>
                 <button onclick="copyFWB()">Copy to Clipboard</button>

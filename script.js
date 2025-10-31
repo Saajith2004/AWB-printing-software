@@ -1,9 +1,10 @@
 // Global variables
-let rateLines = 1;
-let dimensionLines = 1;
+let rateLines = 0;
+let dimensionLines = 0;
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    initializeTabs();
     initializeRateLines();
     initializeDimensionLines();
     setupEventListeners();
@@ -12,20 +13,23 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Tab management
-function openTab(event, tabName) {
-    // Hide all tab contents
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabContents.forEach(tab => tab.classList.remove('active'));
-    
-    // Remove active class from all tab buttons
+function initializeTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(btn => btn.classList.remove('active'));
+    const tabContents = document.querySelectorAll('.tab-content');
     
-    // Show the specific tab content
-    document.getElementById(tabName).classList.add('active');
-    
-    // Add active class to the clicked button
-    event.currentTarget.classList.add('active');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and buttons
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to current tab and button
+            document.getElementById(tabId).classList.add('active');
+            this.classList.add('active');
+        });
+    });
 }
 
 // Rate Lines Management
@@ -35,7 +39,7 @@ function initializeRateLines() {
 
 function addRateLine() {
     const container = document.getElementById('rate-lines-container');
-    const lineNumber = rateLines;
+    rateLines++;
     
     const rateLine = document.createElement('div');
     rateLine.className = 'rate-line';
@@ -60,14 +64,12 @@ function addRateLine() {
     `;
     
     container.appendChild(rateLine);
-    rateLines++;
     document.getElementById('rate-line-count').textContent = rateLines;
     
     // Add event listeners to new inputs
     const inputs = rateLine.querySelectorAll('input, select');
     inputs.forEach(input => {
         input.addEventListener('input', calculateRateLine);
-        input.addEventListener('change', calculateRateLine);
     });
     
     calculateRateLine();
@@ -114,7 +116,7 @@ function initializeDimensionLines() {
 
 function addDimensionLine() {
     const container = document.getElementById('dimension-lines-container');
-    const lineNumber = dimensionLines;
+    dimensionLines++;
     
     const dimensionLine = document.createElement('div');
     dimensionLine.className = 'dimension-line';
@@ -128,14 +130,12 @@ function addDimensionLine() {
     `;
     
     container.appendChild(dimensionLine);
-    dimensionLines++;
     document.getElementById('dimension-line-count').textContent = dimensionLines;
     
     // Add event listeners to new inputs
     const inputs = dimensionLine.querySelectorAll('input');
     inputs.forEach(input => {
         input.addEventListener('input', calculateDimensionLine);
-        input.addEventListener('change', calculateDimensionLine);
     });
     
     calculateDimensionLine();
@@ -178,7 +178,6 @@ function setupEventListeners() {
     const previewInputs = document.querySelectorAll('input, textarea, select');
     previewInputs.forEach(input => {
         input.addEventListener('input', updatePreview);
-        input.addEventListener('change', updatePreview);
     });
 }
 
@@ -197,7 +196,7 @@ function setDefaultValues() {
     document.getElementById('value-customs').value = 'NCV';
 }
 
-// Preview Management
+// Preview Management - FIXED DATA BINDING
 function updatePreview() {
     const preview = document.getElementById('awb-preview');
     
@@ -213,9 +212,9 @@ function updatePreview() {
         <div class="awb-field field-5">${formatConsignee()}</div>
         
         <!-- Agent Details -->
-        <div class="awb-field field-6">${getValue('agent-iata') || 'IATA'}</div>
-        <div class="awb-field field-7">${getValue('agent-account') || 'ACC'}</div>
-        <div class="awb-field field-8">${getValue('agent-name') || 'AGENT'}</div>
+        <div class="awb-field field-6">${getValue('agent-name') || 'AGENT'}</div>
+        <div class="awb-field field-7">${getValue('agent-iata') || 'IATA'}</div>
+        <div class="awb-field field-8">${getValue('agent-account') || 'ACC'}</div>
         <div class="awb-field field-9">${getValue('shipper-account') || 'SHIP ACC'}</div>
         <div class="awb-field field-10">${getValue('accounting-info') || 'ACCOUNTING'}</div>
         
@@ -225,17 +224,18 @@ function updatePreview() {
         <div class="awb-field field-19a">${getValue('carrier-code') || 'CR'}</div>
         <div class="awb-field field-19b">${getValue('flight-number') || 'FLIGHT'}</div>
         
-        <!-- Goods totals will be added here -->
-        <div style="position: absolute; top: 130mm; left: 20mm; font-size: 10px;">
-            Pieces: ${document.getElementById('total-pieces-display').textContent} | 
-            Weight: ${document.getElementById('total-weight-display').textContent} | 
-            Charge: ${document.getElementById('total-charge-display').textContent}
-        </div>
+        <!-- Goods Section 22 -->
+        <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
+        <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
+        <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
+        <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
         
-        <!-- Dimensions -->
-        <div style="position: absolute; top: 140mm; left: 20mm; font-size: 10px;">
-            Volume: ${document.getElementById('total-volume-display').textContent}
-        </div>
+        <!-- Charges -->
+        <div class="awb-field field-13a">${getValue('value-carriage') || 'NVD'}</div>
+        <div class="awb-field field-13b">${getValue('value-customs') || 'NCV'}</div>
+        
+        <!-- Special -->
+        <div class="awb-field field-15">${getValue('handling-info') || ''}</div>
     `;
 }
 
@@ -251,7 +251,7 @@ function formatShipper() {
     const city = getValue('shipper-city');
     const country = getValue('shipper-country');
     
-    if (!name) return 'Shipper information...';
+    if (!name) return 'Shipper Name and Address';
     
     return `${name}\n${address}\n${city}, ${country}`;
 }
@@ -262,7 +262,7 @@ function formatConsignee() {
     const city = getValue('consignee-city');
     const country = getValue('consignee-country');
     
-    if (!name) return 'Consignee information...';
+    if (!name) return 'Consignee Name and Address';
     
     return `${name}\n${address}\n${city}, ${country}`;
 }
@@ -270,11 +270,14 @@ function formatConsignee() {
 function formatRouting() {
     const to1 = getValue('routing-to1');
     const by1 = getValue('routing-by1');
+    const to2 = getValue('routing-to2');
+    const by2 = getValue('routing-by2');
     
-    if (to1 && by1) {
-        return `${to1} by ${by1}`;
-    }
-    return 'Routing information...';
+    let routing = '';
+    if (to1 && by1) routing += `${to1}/${by1}`;
+    if (to2 && by2) routing += ` ${to2}/${by2}`;
+    
+    return routing || 'Requested Routing';
 }
 
 // Clear functions
