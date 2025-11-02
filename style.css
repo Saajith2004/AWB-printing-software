@@ -365,7 +365,7 @@ textarea {
     overflow: hidden;
     white-space: pre-wrap;
     font-size: 10px;
-    line-height: 1.1;
+    line-height: center;
 }
 
 /* AWB Box Positions - PROPERLY ALIGNED */
@@ -414,64 +414,59 @@ textarea {
 
 /* Rate Description - Separate Fields for each column */
 /* Line 1 */
-.rate-pieces-1 { top: 160mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-weight-1 { top: 160mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-unit-1 { top: 160mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-class-1 { top: 160mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-commodity-1 { top: 160mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-charge-weight-1 { top: 160mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-charge-1 { top: 160mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-total-1 { top: 160mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-
-/* Line 2 */
-.rate-pieces-2 { top: 165mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-weight-2 { top: 165mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-unit-2 { top: 165mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-class-2 { top: 165mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-commodity-2 { top: 165mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-charge-weight-2 { top: 165mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-charge-2 { top: 165mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-.rate-total-2 { top: 165mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
-
-
-
+.rate-pieces-1 { top: 143mm; left: 18mm; width: 7mm; height: 5mm; text-align: center; }
+.rate-weight-1 { top: 143mm; left: 27mm; width: 15mm; height: 5mm; text-align: center; }
+.rate-unit-1 { top: 143mm; left: 46mm; width: 4mm; height: 5mm; text-align: center; }
+.rate-class-1 { top: 143mm; left: 51mm; width: 4mm; height: 5mm; text-align: center; }
+.rate-commodity-1 { top: 143mm; left: 55mm; width: 15mm; height: 5mm; text-align: center; }
+.rate-charge-weight-1 { top: 143mm; left: 73mm; width: 15mm; height: 5mm; text-align: center; }
+.rate-charge-1 { top: 143mm; left: 95mm; width: 15mm; height: 5mm; text-align: center; }
+.rate-total-1 { top: 143mm; left: 124mm; width: 15mm; height: 5mm; text-align: center; }
 
 
 
 /* Dimension Lines in Preview */
-.dim-line-preview-1 { top: 185mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-2 { top: 190mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-3 { top: 195mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-4 { top: 200mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-5 { top: 205mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-6 { top: 210mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-7 { top: 215mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-8 { top: 220mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-9 { top: 225mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-10 { top: 230mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
+.dim-line-preview-1 { top: 155mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-2 { top: 158mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-3 { top: 161mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-4 { top: 164mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-5 { top: 167mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; } 
 
-.dim-line-preview-11 { top: 235mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-12 { top: 240mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-13 { top: 245mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-14 { top: 250mm; left: 150mm; width: 50mm; height: 3mm; font-size: 5px; }
-.dim-line-preview-15 { top: 255mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
-.dim-line-preview-16 { top: 260mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
-.dim-line-preview-17 { top: 265mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; } 
-.dim-line-preview-18 { top: 270mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; } 
-.dim-line-preview-19 { top: 275mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
-.dim-line-preview-20 { top: 280mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
+.dim-line-preview-6 { top: 170mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-7 { top: 173mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-8 { top: 176mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-9 { top: 179mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-10 { top: 182mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-11 { top: 185mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-12 { top: 188mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-13 { top: 191mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
 
-.dim-line-preview-21 { top: 285mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
-.dim-line-preview-22 { top: 290mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
-.dim-line-preview-23 { top: 295mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; } 
-.dim-line-preview-24 { top: 300mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; } 
-.dim-line-preview-25 { top: 305mm; left: 150mm; width: 50mm; height: 5mm; font-size: 5px; }
+.dim-line-preview-14 { top: 155mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-15 { top: 158mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-16 { top: 161mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-17 { top: 164mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-18 { top: 167mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-19 { top: 170mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-20 { top: 173mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-21 { top: 176mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-22 { top: 179mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-23 { top: 182mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-24 { top: 185mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-25 { top: 188mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+
+
+/* Total Volume Field (New) */
+.field-22m { top: 205mm; left: 150mm; width: 50mm; height: 10mm; }
+
+
 
 /* Adjust existing field positions to make space */
-.field-22i { top: 210mm; left: 20mm; width: 120mm; height: 30mm; }
-.field-22j { top: 150mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
-.field-22k { top: 150mm; left: 40mm; width: 20mm; height: 8mm; text-align: center; }
-.field-22l { top: 150mm; left: 65mm; width: 25mm; height: 8mm; text-align: center; }
+.field-22i { top: 142mm; left: 150mm; width: 50mm; height: 10mm; }
+.field-22j { top: 198mm; left: 18mm; width: 8mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-22k { top: 198mm; left: 26mm; width: 20mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-22l { top: 198mm; left: 120mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+
+
 
 /* Print Styles */
 @media print {
@@ -556,58 +551,58 @@ textarea {
     }
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-    .container {
-        flex-direction: column;
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .container {
+            flex-direction: column;
+        }
+        
+        .form-tabs {
+            overflow-x: auto;
+        }
+        
+        .rate-header {
+            grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
+        }
+        
+        .rate-line {
+            grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
+        }
+        
+        .dimension-header {
+            grid-template-columns: 70px 90px 90px 90px 90px 70px;
+        }
+        
+        .dimension-line {
+            grid-template-columns: 70px 90px 90px 90px 90px 70px;
+        }
     }
-    
-    .form-tabs {
-        overflow-x: auto;
-    }
-    
-    .rate-header {
-        grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
-    }
-    
-    .rate-line {
-        grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
-    }
-    
-    .dimension-header {
-        grid-template-columns: 70px 90px 90px 90px 90px 70px;
-    }
-    
-    .dimension-line {
-        grid-template-columns: 70px 90px 90px 90px 90px 70px;
-    }
-}
 
-@media (max-width: 768px) {
-    body {
-        padding: 10px;
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        
+        .input-panel, .preview-panel {
+            padding: 15px;
+        }
+        
+        .form-tabs {
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            flex: 1 0 33.333%;
+            padding: 12px 15px;
+            font-size: 12px;
+        }
+        
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+        
+        .row {
+            flex-direction: column;
+            gap: 10px;
+        }
     }
-    
-    .input-panel, .preview-panel {
-        padding: 15px;
-    }
-    
-    .form-tabs {
-        flex-wrap: wrap;
-    }
-    
-    .tab-button {
-        flex: 1 0 33.333%;
-        padding: 12px 15px;
-        font-size: 12px;
-    }
-    
-    .action-buttons {
-        grid-template-columns: 1fr;
-    }
-    
-    .row {
-        flex-direction: column;
-        gap: 10px;
-    }
-}

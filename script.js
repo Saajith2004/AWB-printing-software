@@ -195,12 +195,12 @@ function initializeDimensionLines() {
 }
 
 function addDimensionLine() {
-
-    const maxLines = 25; // Set maximum lines
+    const maxLines = 25; // Changed from 5 to 25
     if (dimensionLines >= maxLines) {
         alert(`Maximum ${maxLines} dimension lines allowed`);
         return;
     }
+    
     const container = document.getElementById('dimension-lines-container');
     dimensionLines++;
     
@@ -225,6 +225,38 @@ function addDimensionLine() {
     });
     
     calculateDimensionLine();
+    
+    // Disable button if max lines reached
+    if (dimensionLines >= maxLines) {
+        const addButton = document.getElementById('add-dimension-btn');
+        if (addButton) {
+            addButton.disabled = true;
+            addButton.style.backgroundColor = '#6c757d';
+            addButton.style.cursor = 'not-allowed';
+        }
+    }
+}
+
+function removeDimensionLine(button) {
+    const maxLines = 25; // Changed from 5 to 25
+    if (dimensionLines > 1) {
+        const dimensionLine = button.closest('.dimension-line');
+        dimensionLine.remove();
+        dimensionLines--;
+        
+        // Re-enable button if below max lines
+        if (dimensionLines < maxLines) {
+            const addButton = document.getElementById('add-dimension-btn');
+            if (addButton) {
+                addButton.disabled = false;
+                addButton.style.backgroundColor = '#28a745';
+                addButton.style.cursor = 'pointer';
+            }
+        }
+        
+        document.getElementById('dimension-line-count').textContent = dimensionLines;
+        calculateDimensionLine();
+    }
 }
 
 function removeDimensionLine(button) {
@@ -334,6 +366,7 @@ function updatePreview() {
         <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
         <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
         <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
+        
 
         <!-- RATE DESCRIPTION LINES -->
         ${generateRateLinesPreview()}
@@ -359,7 +392,7 @@ function generateRateLinesPreview() {
     let html = '';
     
     rateLines.forEach((line, index) => {
-        if (index < 5) { // Limit to 5 lines in preview
+        if (index < 1) { // Limit to 1 line in preview
             const pieces = line.querySelector('.pieces').value || '0';
             const weight = line.querySelector('.weight').value || '0.0';
             const unit = line.querySelector('.unit').value || 'K';
@@ -393,12 +426,13 @@ function generateDimensionLinesPreview() {
     let html = '';
     
     dimLines.forEach((line, index) => {
-        if (index < 5) { // Limit to 5 lines in preview
+        if (index < 25) { // Limit to 25 lines in preview
             const pieces = line.querySelector('.dim-pieces').value || '0';
             const length = line.querySelector('.dim-length').value || '0.0';
             const width = line.querySelector('.dim-width').value || '0.0';
             const height = line.querySelector('.dim-height').value || '0.0';
             const volume = line.querySelector('.line-volume').value || '0.000';
+            const totalVolume = document.getElementById('total-volume-display').textContent || '0.000 CBM';
             
             const lineText = `${pieces} x ${length}x${width}x${height}cm = ${volume}CBM`;
             html += `<div class="awb-field dim-line-preview-${index + 1}">${lineText}</div>`;
