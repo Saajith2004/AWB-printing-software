@@ -570,3 +570,35 @@ function copyFWB() {
 function printAWB() {
     window.print();
 }
+
+// Add this debug function
+function debugDimensions() {
+    console.log('=== DEBUG DIMENSIONS ===');
+    console.log('Dimension lines found:', document.querySelectorAll('.dimension-line').length);
+    console.log('Total volume display:', document.getElementById('total-volume-display').textContent);
+    
+    const dimLines = document.querySelectorAll('.dimension-line');
+    dimLines.forEach((line, index) => {
+        const pieces = line.querySelector('.dim-pieces').value;
+        const length = line.querySelector('.dim-length').value;
+        const width = line.querySelector('.dim-width').value;
+        const height = line.querySelector('.dim-height').value;
+        console.log(`Line ${index + 1}:`, { pieces, length, width, height });
+    });
+    
+    console.log('Generated preview HTML:', generateDimensionLinesPreview());
+    console.log('Total volume:', getTotalDimensionVolume());
+}
+
+// Call it in your DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTabs();
+    initializeRateLines();
+    initializeDimensionLines();
+    setupEventListeners();
+    setDefaultValues();
+    updatePreview();
+    
+    // Add debug after a short delay
+    setTimeout(debugDimensions, 1000);
+});
