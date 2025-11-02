@@ -125,6 +125,29 @@ function calculateRateLine() {
     document.getElementById('total-pieces-display').textContent = totalPieces;
     document.getElementById('total-weight-display').textContent = totalWeight.toFixed(1);
     document.getElementById('total-charge-display').textContent = totalCharge.toFixed(2);
+    
+    // Update preview when rates change
+    updatePreview();
+}
+
+function calculateDimensionLine() {
+    let totalVolume = 0;
+    
+    document.querySelectorAll('.dimension-line').forEach(line => {
+        const pieces = parseInt(line.querySelector('.dim-pieces').value) || 0;
+        const length = parseFloat(line.querySelector('.dim-length').value) || 0;
+        const width = parseFloat(line.querySelector('.dim-width').value) || 0;
+        const height = parseFloat(line.querySelector('.dim-height').value) || 0;
+        const lineVolume = (length * width * height * pieces) / 1000000; // Convert to CBM
+        
+        line.querySelector('.line-volume').value = lineVolume.toFixed(3);
+        totalVolume += lineVolume;
+    });
+    
+    document.getElementById('total-volume-display').textContent = totalVolume.toFixed(3) + ' CBM';
+    
+    // Update preview when dimensions change
+    updatePreview();
 }
 
 // Dimension Lines Management
@@ -217,8 +240,8 @@ function setDefaultValues() {
 // Preview Management - FIXED DATA BINDING
 function updatePreview() {
     const preview = document.getElementById('awb-preview');
-    const awbNumber = getValue('awb-number') || '';
-    const awbParts = awbNumber.split('-');
+    const awbNumber = getValue('awb-number-1a') || '';
+    const awbSuffix = getValue('awb-number-1b') || '';
     
     preview.innerHTML = `
         <!-- AWB Header -->
@@ -262,11 +285,20 @@ function updatePreview() {
         <div class="awb-field field-19a">${getValue('flight-date') || 'DDMMYY'}</div>
         <div class="awb-field field-19b">${getValue('flight-number') || 'FLIGHT'}</div>
         
-        <!-- Goods Section 22 -->
+       <!-- Goods Section 22 - Totals -->
         <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
         <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
         <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
+
+        <!-- RATE DESCRIPTION LINES -->
+        ${generateRateLinesPreview()}
+
+        <!-- DIMENSION LINES -->
+        ${generateDimensionLinesPreview()}
+
+        <!-- Goods Description -->
         <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
+        
         
         <!-- Charges -->
         <div class="awb-field field-13a">${getValue('value-carriage') || 'NVD'}</div>
@@ -276,7 +308,50 @@ function updatePreview() {
         <div class="awb-field field-15">${getValue('handling-info') || ''}</div>
     `;
 }
+// New function to generate rate lines for preview
+function generateRateLinesPreview() {
+    const rateLines = document.querySelectorAll('.rate-line');
+    let html = '';
+    
+    rateLines.forEach((line, index) => {
+        if (index < 5) { // Limit to 5 lines in preview
+            const pieces = line.querySelector('.pieces').value || '0';
+            const weight = line.querySelector('.weight').value || '0.0';
+            const unit = line.querySelector('.unit').value || 'K';
+            const rateClass = line.querySelector('.rate-class').value || '';
+            const commodity = line.querySelector('.commodity').value || '';
+            const chargeWeight = line.querySelector('.charge-weight').value || '0.0';
+            const rateCharge = line.querySelector('.rate-charge').value || '0.00';
+            const total = line.querySelector('.line-total').value || '0.00';
+            
+            const lineText = `${pieces} ${weight}${unit} ${rateClass} ${commodity} ${chargeWeight} ${rateCharge} ${total}`;
+            html += `<div class="awb-field rate-line-preview-${index + 1}">${lineText}</div>`;
+        }
+    });
+    
+    return html;
+}
 
+// New function to generate dimension lines for preview
+function generateDimensionLinesPreview() {
+    const dimLines = document.querySelectorAll('.dimension-line');
+    let html = '';
+    
+    dimLines.forEach((line, index) => {
+        if (index < 5) { // Limit to 5 lines in preview
+            const pieces = line.querySelector('.dim-pieces').value || '0';
+            const length = line.querySelector('.dim-length').value || '0.0';
+            const width = line.querySelector('.dim-width').value || '0.0';
+            const height = line.querySelector('.dim-height').value || '0.0';
+            const volume = line.querySelector('.line-volume').value || '0.000';
+            
+            const lineText = `${pieces} x ${length}x${width}x${height}cm = ${volume}CBM`;
+            html += `<div class="awb-field dim-line-preview-${index + 1}">${lineText}</div>`;
+        }
+    });
+    
+    return html;
+}
 // Helper functions
 function getValue(id) {
     const element = document.getElementById(id);

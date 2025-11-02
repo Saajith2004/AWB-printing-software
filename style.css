@@ -410,6 +410,22 @@ textarea {
 
 .field-13b { top: 120mm; left: 125mm; width: 20mm; height: 8mm; text-align: center; }
 /* .field-15 { top: 130mm; left: 20mm; width: 120mm; height: 15mm; } */
+/* Rate Description Lines in Preview */
+.rate-line-preview-1 { top: 160mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.rate-line-preview-2 { top: 165mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.rate-line-preview-3 { top: 170mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.rate-line-preview-4 { top: 175mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.rate-line-preview-5 { top: 180mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+
+/* Dimension Lines in Preview */
+.dim-line-preview-1 { top: 185mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.dim-line-preview-2 { top: 190mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.dim-line-preview-3 { top: 195mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.dim-line-preview-4 { top: 200mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+.dim-line-preview-5 { top: 205mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+
+/* Adjust existing field positions to make space */
+.field-22i { top: 210mm; left: 20mm; width: 120mm; height: 30mm; }
 .field-22j { top: 150mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
 .field-22k { top: 150mm; left: 40mm; width: 20mm; height: 8mm; text-align: center; }
 .field-22l { top: 150mm; left: 65mm; width: 25mm; height: 8mm; text-align: center; }
