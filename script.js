@@ -1,3 +1,35 @@
+// Enhanced error handling
+console.log('Script loaded successfully');
+
+// Check if all required elements exist
+function checkRequiredElements() {
+    const requiredElements = [
+        'awb-preview',
+        'rate-lines-container',
+        'dimension-lines-container'
+    ];
+    
+    requiredElements.forEach(id => {
+        const element = document.getElementById(id);
+        if (!element) {
+            console.error('Missing required element:', id);
+        } else {
+            console.log('Found element:', id);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    checkRequiredElements();
+    initializeTabs();
+    initializeRateLines();
+    initializeDimensionLines();
+    setupEventListeners();
+    setDefaultValues();
+    updatePreview();
+});
+
 // Global variables
 let rateLines = 0;
 let dimensionLines = 0;
@@ -56,6 +88,13 @@ function initializeRateLines() {
 }
 
 function addRateLine() {
+
+    const maxLines = 5; // Set maximum lines
+    if (rateLines >= maxLines) {
+        alert(`Maximum ${maxLines} rate lines allowed`);
+        return;
+    }
+
     const container = document.getElementById('rate-lines-container');
     rateLines++;
     
@@ -245,19 +284,19 @@ function updatePreview() {
     
     preview.innerHTML = `
         <!-- AWB Header -->
-        <div class="awb-field field-1a">${getValue('awb-number-1a') || '618'}</div>
-        <div class="awb-field field-1b">${getValue('awb-number-1b') || '12345675'}</div>
+        <div class="awb-field field-1a">${awbNumber || '618'}</div>
+        <div class="awb-field field-1b">${awbSuffix || '12345675'}</div>
         <div class="awb-field field-1">${getValue('origin-iata') || 'ORG'}</div>
 
         <!-- DUPLICATE FIELDS IN NEW POSITION-1 -->
-        <div class="awb-field field-1a-copy">${awbParts[0] || '618'}</div>
+        <div class="awb-field field-1a-copy">${awbNumber || '618'}</div>
         <div class="awb-field field-hyphen">-</div>
-        <div class="awb-field field-1b-copy">${awbParts[1] || '12345675'}</div>
+        <div class="awb-field field-1b-copy">${awbSuffix || '12345675'}</div>
 
         <!-- DUPLICATE FIELDS IN NEW POSITION-2 -->
-        <div class="awb-field field-1a-copy-1">${awbParts[0] || '618'}</div>
+        <div class="awb-field field-1a-copy-1">${awbNumber || '618'}</div>
         <div class="awb-field field-hyphen-1">-</div>
-        <div class="awb-field field-1b-copy-1">${awbParts[1] || '12345675'}</div>
+        <div class="awb-field field-1b-copy-1">${awbSuffix || '12345675'}</div>
 
         <!-- Shipper -->
         <div class="awb-field field-3">${formatShipper()}</div>
@@ -285,7 +324,7 @@ function updatePreview() {
         <div class="awb-field field-19a">${getValue('flight-date') || 'DDMMYY'}</div>
         <div class="awb-field field-19b">${getValue('flight-number') || 'FLIGHT'}</div>
         
-       <!-- Goods Section 22 - Totals -->
+        <!-- Goods Section 22 - Totals -->
         <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
         <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
         <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
@@ -299,7 +338,6 @@ function updatePreview() {
         <!-- Goods Description -->
         <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
         
-        
         <!-- Charges -->
         <div class="awb-field field-13a">${getValue('value-carriage') || 'NVD'}</div>
         <div class="awb-field field-13b">${getValue('value-customs') || 'NCV'}</div>
@@ -309,6 +347,7 @@ function updatePreview() {
     `;
 }
 // New function to generate rate lines for preview
+// New function to generate separate rate fields for preview
 function generateRateLinesPreview() {
     const rateLines = document.querySelectorAll('.rate-line');
     let html = '';
@@ -324,8 +363,18 @@ function generateRateLinesPreview() {
             const rateCharge = line.querySelector('.rate-charge').value || '0.00';
             const total = line.querySelector('.line-total').value || '0.00';
             
-            const lineText = `${pieces} ${weight}${unit} ${rateClass} ${commodity} ${chargeWeight} ${rateCharge} ${total}`;
-            html += `<div class="awb-field rate-line-preview-${index + 1}">${lineText}</div>`;
+            const lineNumber = index + 1;
+            
+            html += `
+                <div class="awb-field rate-pieces-${lineNumber}">${pieces}</div>
+                <div class="awb-field rate-weight-${lineNumber}">${weight}</div>
+                <div class="awb-field rate-unit-${lineNumber}">${unit}</div>
+                <div class="awb-field rate-class-${lineNumber}">${rateClass}</div>
+                <div class="awb-field rate-commodity-${lineNumber}">${commodity}</div>
+                <div class="awb-field rate-charge-weight-${lineNumber}">${chargeWeight}</div>
+                <div class="awb-field rate-charge-${lineNumber}">${rateCharge}</div>
+                <div class="awb-field rate-total-${lineNumber}">${total}</div>
+            `;
         }
     });
     

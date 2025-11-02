@@ -407,15 +407,66 @@ textarea {
 .field-19a { top: 120mm; left: 20mm; width: 10mm; height: 10mm; text-align: center; }
 .field-19b { top: 120mm; left: 35mm; width: 15mm; height: 10mm; text-align: center; } */
 
-
+.field-13a { top: 120mm; left: 100mm; width: 20mm; height: 8mm; text-align: center; }
 .field-13b { top: 120mm; left: 125mm; width: 20mm; height: 8mm; text-align: center; }
+
 /* .field-15 { top: 130mm; left: 20mm; width: 120mm; height: 15mm; } */
-/* Rate Description Lines in Preview */
-.rate-line-preview-1 { top: 160mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
-.rate-line-preview-2 { top: 165mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
-.rate-line-preview-3 { top: 170mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
-.rate-line-preview-4 { top: 175mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
-.rate-line-preview-5 { top: 180mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
+
+/* Rate Description - Separate Fields for each column */
+/* Line 1 */
+.rate-pieces-1 { top: 160mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-weight-1 { top: 160mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-unit-1 { top: 160mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-class-1 { top: 160mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-commodity-1 { top: 160mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-weight-1 { top: 160mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-1 { top: 160mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-total-1 { top: 160mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+
+/* Line 2 */
+.rate-pieces-2 { top: 165mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-weight-2 { top: 165mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-unit-2 { top: 165mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-class-2 { top: 165mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-commodity-2 { top: 165mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-weight-2 { top: 165mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-2 { top: 165mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-total-2 { top: 165mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+
+/* Line 3 */
+.rate-pieces-3 { top: 170mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-weight-3 { top: 170mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-unit-3 { top: 170mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-class-3 { top: 170mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-commodity-3 { top: 170mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-weight-3 { top: 170mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-3 { top: 170mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-total-3 { top: 170mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+
+/* Line 4 */
+.rate-pieces-4 { top: 175mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-weight-4 { top: 175mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-unit-4 { top: 175mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-class-4 { top: 175mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-commodity-4 { top: 175mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-weight-4 { top: 175mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-4 { top: 175mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-total-4 { top: 175mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+
+/* Line 5 */
+.rate-pieces-5 { top: 180mm; left: 20mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-weight-5 { top: 180mm; left: 37mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-unit-5 { top: 180mm; left: 54mm; width: 8mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-class-5 { top: 180mm; left: 64mm; width: 10mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-commodity-5 { top: 180mm; left: 76mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-weight-5 { top: 180mm; left: 93mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-charge-5 { top: 180mm; left: 110mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+.rate-total-5 { top: 180mm; left: 127mm; width: 15mm; height: 5mm; text-align: center; font-size: 9px; }
+
+
+/* .rate-line-preview-1, .rate-line-preview-2, .rate-line-preview-3, 
+.rate-line-preview-4, .rate-line-preview-5  */
+
 
 /* Dimension Lines in Preview */
 .dim-line-preview-1 { top: 185mm; left: 20mm; width: 120mm; height: 5mm; font-size: 9px; }
@@ -429,7 +480,6 @@ textarea {
 .field-22j { top: 150mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
 .field-22k { top: 150mm; left: 40mm; width: 20mm; height: 8mm; text-align: center; }
 .field-22l { top: 150mm; left: 65mm; width: 25mm; height: 8mm; text-align: center; }
-.field-22i { top: 160mm; left: 20mm; width: 120mm; height: 40mm; }
 
 /* Print Styles */
 @media print {
