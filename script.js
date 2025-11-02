@@ -284,6 +284,9 @@ function calculateDimensionLine() {
     });
     
     document.getElementById('total-volume-display').textContent = totalVolume.toFixed(3) + ' CBM';
+    
+    // Update preview when dimensions change
+    updatePreview();
 }
 
 // Setup event listeners
@@ -314,14 +317,13 @@ function setDefaultValues() {
     document.getElementById('value-customs').value = 'NCV';
 }
 
-// Preview Management - FIXED DATA BINDING
 function updatePreview() {
     const preview = document.getElementById('awb-preview');
     const awbNumber = getValue('awb-number-1a') || '';
     const awbSuffix = getValue('awb-number-1b') || '';
     
     preview.innerHTML = `
-        <!-- AWB Header -->
+        <!-- Your existing fields... -->
         <div class="awb-field field-1a">${awbNumber || '618'}</div>
         <div class="awb-field field-1b">${awbSuffix || '12345675'}</div>
         <div class="awb-field field-1">${getValue('origin-iata') || 'ORG'}</div>
@@ -331,7 +333,6 @@ function updatePreview() {
         <div class="awb-field field-hyphen">-</div>
         <div class="awb-field field-1b-copy">${awbSuffix || '12345675'}</div>
 
-        <!-- DUPLICATE FIELDS IN NEW POSITION-2 -->
         <div class="awb-field field-1a-copy-1">${awbNumber || '618'}</div>
         <div class="awb-field field-hyphen-1">-</div>
         <div class="awb-field field-1b-copy-1">${awbSuffix || '12345675'}</div>
@@ -366,13 +367,15 @@ function updatePreview() {
         <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
         <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
         <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
-        
 
         <!-- RATE DESCRIPTION LINES -->
         ${generateRateLinesPreview()}
 
         <!-- DIMENSION LINES -->
         ${generateDimensionLinesPreview()}
+
+        <!-- TOTAL DIMENSION VOLUME -->
+        <div class="awb-field dimension-total-display">${getTotalDimensionVolume()}</div>
 
         <!-- Goods Description -->
         <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
@@ -427,20 +430,39 @@ function generateDimensionLinesPreview() {
     
     dimLines.forEach((line, index) => {
         if (index < 25) { // Limit to 25 lines in preview
-            const pieces = line.querySelector('.dim-pieces').value || '0';
+            
             const length = line.querySelector('.dim-length').value || '0.0';
             const width = line.querySelector('.dim-width').value || '0.0';
             const height = line.querySelector('.dim-height').value || '0.0';
             const volume = line.querySelector('.line-volume').value || '0.000';
+            const pieces = line.querySelector('.dim-pieces').value || '0';
             const totalVolume = document.getElementById('total-volume-display').textContent || '0.000 CBM';
-            
-            const lineText = `${pieces} x ${length}x${width}x${height}cm = ${volume}CBM`;
+
+            const lineText = `${length}x${width}x${height}cm = ${pieces} pcs,`;
             html += `<div class="awb-field dim-line-preview-${index + 1}">${lineText}</div>`;
         }
     });
     
     return html;
 }
+
+// Function to calculate and return total dimension volume
+function getTotalDimensionVolume() {
+    let totalVolume = 0;
+    
+    document.querySelectorAll('.dimension-line').forEach(line => {
+        const pieces = parseInt(line.querySelector('.dim-pieces').value) || 0;
+        const length = parseFloat(line.querySelector('.dim-length').value) || 0;
+        const width = parseFloat(line.querySelector('.dim-width').value) || 0;
+        const height = parseFloat(line.querySelector('.dim-height').value) || 0;
+        const lineVolume = (length * width * height * pieces) / 1000000; // Convert to CBM
+        
+        totalVolume += lineVolume;
+    });
+    
+    return totalVolume.toFixed(3) + ' CBM';
+}
+
 // Helper functions
 function getValue(id) {
     const element = document.getElementById(id);

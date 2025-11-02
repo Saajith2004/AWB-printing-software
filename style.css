@@ -455,8 +455,9 @@ textarea {
 .dim-line-preview-25 { top: 188mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
 
 
-/* Total Volume Field (New) */
-.field-22m { top: 205mm; left: 150mm; width: 50mm; height: 10mm; }
+/* total dimension volume field */
+.dimension-total-display { top: 195mm; left: 150mm; width: 50mm; height: 8mm; }
+
 
 
 
