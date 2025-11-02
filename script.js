@@ -199,12 +199,25 @@ function setDefaultValues() {
 // Preview Management - FIXED DATA BINDING
 function updatePreview() {
     const preview = document.getElementById('awb-preview');
+    const awbNumber = getValue('awb-number') || '';
+    const awbParts = awbNumber.split('-');
     
     preview.innerHTML = `
         <!-- AWB Header -->
-        <div class="awb-field field-1ab">${getValue('awb-number') || 'AWB NUMBER'}</div>
+        <div class="awb-field field-1a">${getValue('awb-number-1a') || 'AWB NUMBER'}</div>
+        <div class="awb-field field-1b">${getValue('awb-number-1b') || 'AWB NUMBER'}</div>
         <div class="awb-field field-1">${getValue('origin-iata') || 'ORG'}</div>
-        
+
+        <!-- DUPLICATE FIELDS IN NEW POSITION-1 -->
+        <div class="awb-field field-1a-copy">${awbParts[0] || '618'}</div>
+        <div class="awb-field field-hyphen">-</div>
+        <div class="awb-field field-1b-copy">${awbParts[1] || '12345675'}</div>
+
+        <!-- DUPLICATE FIELDS IN NEW POSITION-2 -->
+        <div class="awb-field field-1a-copy-1">${awbParts[0] || '618'}</div>
+        <div class="awb-field field-hyphen-1">-</div>
+        <div class="awb-field field-1b-copy-1">${awbParts[1] || '12345675'}</div>
+
         <!-- Shipper -->
         <div class="awb-field field-3">${formatShipper()}</div>
         
