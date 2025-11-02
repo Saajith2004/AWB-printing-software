@@ -89,7 +89,7 @@ function initializeRateLines() {
 
 function addRateLine() {
 
-    const maxLines = 5; // Set maximum lines
+    const maxLines = 1; // Set maximum lines
     if (rateLines >= maxLines) {
         alert(`Maximum ${maxLines} rate lines allowed`);
         return;
@@ -195,6 +195,12 @@ function initializeDimensionLines() {
 }
 
 function addDimensionLine() {
+
+    const maxLines = 25; // Set maximum lines
+    if (dimensionLines >= maxLines) {
+        alert(`Maximum ${maxLines} dimension lines allowed`);
+        return;
+    }
     const container = document.getElementById('dimension-lines-container');
     dimensionLines++;
     
