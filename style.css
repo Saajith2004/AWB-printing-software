@@ -359,7 +359,7 @@ textarea {
 
 .awb-field {
     position: absolute;
-    border: 1px solid #000; /* remove border in the AWB preview */
+    /* border: 1px solid #000; remove border in the AWB preview */
     padding: 3px;
     background: transparent;
     overflow: hidden;
@@ -369,8 +369,8 @@ textarea {
 }
 
 /* AWB Box Positions - PROPERLY ALIGNED */
-.field-1a { top: 8mm; left: 17mm; width: 10mm; height: 5mm; font-weight: bold; text-align: right; }
-.field-1b { top: 8mm; left: 38mm; width: 25mm; height: 5mm; font-weight: bold; text-align: left; }
+.field-1a { top: 8mm; left: 15mm; width: 10mm; height: 5mm; font-weight: bold; text-align: right; }
+.field-1b { top: 8mm; left: 37mm; width: 25mm; height: 5mm; font-weight: bold; text-align: left; }
 .field-1 { top: 8mm; left: 28mm; width: 9mm; height: 5mm; text-align: center; text-align: center; }
 
 /* Copy of AWB number at bottom (for carbon copy) */
@@ -423,46 +423,41 @@ textarea {
 .rate-charge-1 { top: 143mm; left: 95mm; width: 15mm; height: 5mm; text-align: center; }
 .rate-total-1 { top: 143mm; left: 124mm; width: 15mm; height: 5mm; text-align: center; }
 
-
-
 /* Dimension Lines in Preview */
-.dim-line-preview-1 { top: 155mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-2 { top: 158mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-3 { top: 161mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-4 { top: 164mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-5 { top: 167mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; } 
+.dim-line-preview-1 { top: 155mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-2 { top: 158mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-3 { top: 161mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-4 { top: 164mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-5 { top: 167mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
 
-.dim-line-preview-6 { top: 170mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-7 { top: 173mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-8 { top: 176mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-9 { top: 179mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-10 { top: 182mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-11 { top: 185mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-12 { top: 188mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-13 { top: 191mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 5px; }
+.dim-line-preview-6 { top: 170mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-7 { top: 173mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-8 { top: 176mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-9 { top: 179mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-10 { top: 182mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-11 { top: 185mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-12 { top: 188mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-13 { top: 191mm; left: 150mm; width: 50mm; height: 3.5mm; font-size: 9px; }
 
-.dim-line-preview-14 { top: 155mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-15 { top: 158mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-16 { top: 161mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-17 { top: 164mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-18 { top: 167mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-19 { top: 170mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-20 { top: 173mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-21 { top: 176mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-22 { top: 179mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-23 { top: 182mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-24 { top: 185mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-.dim-line-preview-25 { top: 188mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 5px; }
-
+.dim-line-preview-14 { top: 155mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-15 { top: 158mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-16 { top: 161mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-17 { top: 164mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-18 { top: 167mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-19 { top: 170mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-20 { top: 173mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-21 { top: 176mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-22 { top: 179mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-23 { top: 182mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-24 { top: 185mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
+.dim-line-preview-25 { top: 188mm; left: 55mm; width: 50mm; height: 3.5mm; font-size: 9px; }
 
 /* total dimension volume field */
-.dimension-total-display { top: 195mm; left: 150mm; width: 50mm; height: 8mm; }
-
-
-
+.dimension-total-display { top: 198mm; left: 150mm; width: 50mm; height: 8mm; align-items: center; justify-content: right; display: flex; }
 
 /* Adjust existing field positions to make space */
 .field-22i { top: 142mm; left: 150mm; width: 50mm; height: 10mm; }
+.section-separator { top: 151mm; left: 150mm; width: 50mm; height: 5mm; font-size: 20px; align-items: center; justify-content: center; display: flex; }
 .field-22j { top: 198mm; left: 18mm; width: 8mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 .field-22k { top: 198mm; left: 26mm; width: 20mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 .field-22l { top: 198mm; left: 120mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }

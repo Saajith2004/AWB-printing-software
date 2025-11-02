@@ -379,6 +379,8 @@ function updatePreview() {
 
         <!-- Goods Description -->
         <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
+        <!-- SEPARATOR LINES -->
+        <div class="awb-field section-separator">---------------------</div>
         
         <!-- Charges -->
         <div class="awb-field field-13a">${getValue('value-carriage') || 'NVD'}</div>
