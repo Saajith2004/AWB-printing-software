@@ -15,6 +15,7 @@
                 <button class="tab-button active" data-tab="consignment-tab">Consignment</button>
                 <button class="tab-button" data-tab="parties-tab">Parties</button>
                 <button class="tab-button" data-tab="routing-tab">Routing</button>
+                <button class="tab-button" data-tab="agent-tab">Agent</button>
                 <button class="tab-button" data-tab="goods-tab">Goods</button>
                 <button class="tab-button" data-tab="charges-tab">Charges</button>
                 <button class="tab-button" data-tab="special-tab">Special</button>
@@ -44,6 +45,7 @@
                     </div>
                     
                 </div>
+            </div>
             <!-- PARTIES TAB -->
             <div id="parties-tab" class="tab-content">
                 <div class="tab-header">
@@ -75,7 +77,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="shipper-account">Shipper Account No (Box 9)</label>
+                        <label for="shipper-account">Shipper Account No (Box 3a)</label>
                         <input type="text" id="shipper-account" placeholder="Account number" maxlength="9">
                     </div>
                 </div>
@@ -104,7 +106,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="consignee-account">Consignee Account No (Box 4)</label>
+                        <label for="consignee-account">Consignee Account No (Box 5a)</label>
                         <input type="text" id="consignee-account" placeholder="Account number" maxlength="9">
                     </div>
                 </div>
@@ -112,6 +114,29 @@
                 <div class="form-group">
                     <label for="accounting-info">Accounting Information (Box 10)</label>
                     <textarea id="accounting-info" placeholder="Payment instructions..." maxlength="34"></textarea>
+                </div>
+            </div>
+            <!-- AGENT TAB -->
+            <div id="agent-tab" class="tab-content">
+                <div class="tab-header">
+                    <h3>Agent Details</h3>
+                    <button class="clear-tab-btn" onclick="clearCurrentTab()">Clear This Tab</button>
+                </div>
+                <div class="form-group">
+                    <label for="agent-name">Agent Name and City (Box 6)</label>
+                    <input type="text" id="agent-name" placeholder="Agent company name" maxlength="35">
+                </div>
+                <div class="form-group">
+                    <label for="agent-iata">Agent IATA Code (Box 7)</label>
+                    <input type="text" id="agent-iata" placeholder="e.g., 12345678" maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="agent-account">Agent Account No (Box 8)</label>
+                    <input type="text" id="agent-account" placeholder="Account number" maxlength="9">
+                </div>
+                <div class="form-group">
+                    <label for="agent-account-info">Agent accounting info (Box 10)</label>
+                    <input type="text" id="agent-account-info" placeholder="Agent accounting info" maxlength="35">
                 </div>
             </div>
 
@@ -124,41 +149,51 @@
 
                 <div class="row">
                     <div class="form-group">
-                        <label for="carrier-code">Carrier Code (Box 19A)</label>
-                        <input type="text" id="carrier-code" placeholder="e.g., SQ" maxlength="2">
-                    </div>
-                    <div class="form-group">
-                        <label for="flight-number">Flight Number (Box 19B)</label>
+                        <label for="flight-number">Flight Number (Box 19A)</label>
                         <input type="text" id="flight-number" placeholder="e.g., 512" maxlength="5">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="flight-date">Flight Date</label>
+                    <label for="flight-date">Flight Date (Box 19B)</label>
                     <input type="date" id="flight-date">
                 </div>
 
                 <div class="section-group">
-                    <h4>Routing Information (Box 11B/11D/11F)</h4>
+                    <h4>Routing Information</h4>
                     <div class="row">
+                        <!-- 11A -->
                         <div class="form-group">
-                            <label for="routing-to1">To (Airport)</label>
+                            <label for="routing-to1">To</label>
                             <input type="text" id="routing-to1" placeholder="e.g., SIN" maxlength="3">
                         </div>
+                        <!-- 11B -->
                         <div class="form-group">
-                            <label for="routing-by1">By (Carrier)</label>
+                            <label for="routing-by1">By First Carrier</label>
                             <input type="text" id="routing-by1" placeholder="e.g., SQ" maxlength="2">
                         </div>
-                    </div>
-                    <div class="row">
+                        
+                        <!-- 11C -->
                         <div class="form-group">
                             <label for="routing-to2">To (Airport)</label>
                             <input type="text" id="routing-to2" placeholder="e.g., BKK" maxlength="3">
                         </div>
+                        <!-- 11D -->
                         <div class="form-group">
                             <label for="routing-by2">By (Carrier)</label>
                             <input type="text" id="routing-by2" placeholder="e.g., TG" maxlength="2">
                         </div>
+                        <!-- 11E -->
+                        <div class="form-group">
+                            <label for="routing-to3">To (Airport)</label>
+                            <input type="text" id="routing-to3" placeholder="e.g., HKG" maxlength="3">
+                        </div>
+                        <!-- 11F -->
+                        <div class="form-group">
+                            <label for="routing-by3">By (Carrier)</label>
+                            <input type="text" id="routing-by3" placeholder="e.g., CX" maxlength="2">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -178,7 +213,7 @@
                     </div>
                     
                     <div class="rate-table">
-                        <div class="rate-header">
+                        <div class="rate-lines-container">
                             <div>Pieces (22A)</div>
                             <div>Gross Weight (22B)</div>
                             <div>Unit (22C)</div>

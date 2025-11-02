@@ -383,20 +383,33 @@ textarea {
 .field-hyphen-1 { top: 268mm; left: 178mm; width: 5mm; height: 5mm; font-weight: bold; text-align: center; }
 .field-1b-copy-1 { top: 268mm; left: 183mm; width: 18mm; height: 5mm; font-weight: bold; text-align: left; }
 
-.field-3 { top: 30mm; left: 20mm; width: 80mm; height: 20mm; }
-.field-5 { top: 55mm; left: 20mm; width: 80mm; height: 25mm; }
-.field-6 { top: 85mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
-.field-7 { top: 85mm; left: 40mm; width: 15mm; height: 8mm; text-align: center; }
-.field-8 { top: 85mm; left: 60mm; width: 20mm; height: 8mm; text-align: center; }
-.field-9 { top: 85mm; left: 85mm; width: 20mm; height: 8mm; text-align: center; }
-.field-10 { top: 95mm; left: 20mm; width: 85mm; height: 12mm; }
-.field-11a { top: 110mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
-.field-11b { top: 110mm; left: 40mm; width: 65mm; height: 8mm; }
-.field-19a { top: 120mm; left: 20mm; width: 10mm; height: 8mm; text-align: center; }
-.field-19b { top: 120mm; left: 35mm; width: 15mm; height: 8mm; text-align: center; }
-.field-13a { top: 120mm; left: 100mm; width: 20mm; height: 8mm; text-align: center; }
+/* New fields for Shipper and Consignee Account Numbers and details */
+.field-3 { top: 20mm; left: 18mm; width: 90mm; height: 19mm; }
+.field-5 { top: 48mm; left: 18mm; width: 90mm; height: 25mm; }
+.field-3a { top: 16mm; left: 75mm; width: 25mm; height: 5mm; text-align: center; }
+.field-5a { top: 42mm; left: 75mm; width: 25mm; height: 5mm; text-align: center; }
+
+/* agent details */
+.field-6 { top: 77mm; left: 60mm; width: 48mm; height: 5mm; text-align: center; }
+.field-7 { top: 84mm; left: 40mm; width: 20mm; height: 5mm; text-align: center; }
+.field-8 { top: 84mm; left: 70mm; width: 30mm; height: 5mm; text-align: center; }
+.field-10 { top: 78mm; left: 110mm; width: 90mm; height: 11mm; }
+
+/* Routing */
+.field-11a { top: 100mm; left: 17mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+.field-11b { top: 100mm; left: 30mm; width: 18mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+.field-11c { top: 100mm; left: 68mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+.field-11d { top: 100mm; left: 78mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+.field-11e { top: 100mm; left: 89mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+.field-11f { top: 100mm; left: 100mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
+
+/* Flight Details
+.field-19a { top: 120mm; left: 20mm; width: 10mm; height: 10mm; text-align: center; }
+.field-19b { top: 120mm; left: 35mm; width: 15mm; height: 10mm; text-align: center; } */
+
+
 .field-13b { top: 120mm; left: 125mm; width: 20mm; height: 8mm; text-align: center; }
-.field-15 { top: 130mm; left: 20mm; width: 120mm; height: 15mm; }
+/* .field-15 { top: 130mm; left: 20mm; width: 120mm; height: 15mm; } */
 .field-22j { top: 150mm; left: 20mm; width: 15mm; height: 8mm; text-align: center; }
 .field-22k { top: 150mm; left: 40mm; width: 20mm; height: 8mm; text-align: center; }
 .field-22l { top: 150mm; left: 65mm; width: 25mm; height: 8mm; text-align: center; }

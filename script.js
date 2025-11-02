@@ -2,7 +2,7 @@
 let rateLines = 0;
 let dimensionLines = 0;
 
-// Initialize when page loads
+// In script.js - make sure you have this:
 document.addEventListener('DOMContentLoaded', function() {
     initializeTabs();
     initializeRateLines();
@@ -12,24 +12,42 @@ document.addEventListener('DOMContentLoaded', function() {
     updatePreview();
 });
 
-// Tab management
+// Tab management - ENHANCED VERSION
 function initializeTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
     
+    console.log('Found tab buttons:', tabButtons.length);
+    console.log('Found tab contents:', tabContents.length);
+    
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const tabId = this.getAttribute('data-tab');
+            console.log('Tab clicked:', tabId);
             
             // Remove active class from all tabs and buttons
-            tabContents.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+                console.log('Removed active from:', tab.id);
+            });
             tabButtons.forEach(btn => btn.classList.remove('active'));
             
             // Add active class to current tab and button
-            document.getElementById(tabId).classList.add('active');
-            this.classList.add('active');
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                this.classList.add('active');
+                console.log('Added active to:', tabId);
+            } else {
+                console.error('Tab not found:', tabId);
+            }
         });
     });
+    
+    // Activate first tab by default
+    if (tabButtons.length > 0) {
+        tabButtons[0].click();
+    }
 }
 
 // Rate Lines Management
@@ -204,8 +222,8 @@ function updatePreview() {
     
     preview.innerHTML = `
         <!-- AWB Header -->
-        <div class="awb-field field-1a">${getValue('awb-number-1a') || 'AWB NUMBER'}</div>
-        <div class="awb-field field-1b">${getValue('awb-number-1b') || 'AWB NUMBER'}</div>
+        <div class="awb-field field-1a">${getValue('awb-number-1a') || '618'}</div>
+        <div class="awb-field field-1b">${getValue('awb-number-1b') || '12345675'}</div>
         <div class="awb-field field-1">${getValue('origin-iata') || 'ORG'}</div>
 
         <!-- DUPLICATE FIELDS IN NEW POSITION-1 -->
@@ -220,21 +238,28 @@ function updatePreview() {
 
         <!-- Shipper -->
         <div class="awb-field field-3">${formatShipper()}</div>
-        
+        <div class="awb-field field-3a">${getValue('shipper-account') || 'SHIP ACC'}</div>
+
         <!-- Consignee -->
         <div class="awb-field field-5">${formatConsignee()}</div>
+        <div class="awb-field field-5a">${getValue('consignee-account') || 'CNE ACC'}</div>
         
         <!-- Agent Details -->
         <div class="awb-field field-6">${getValue('agent-name') || 'AGENT'}</div>
         <div class="awb-field field-7">${getValue('agent-iata') || 'IATA'}</div>
         <div class="awb-field field-8">${getValue('agent-account') || 'ACC'}</div>
-        <div class="awb-field field-9">${getValue('shipper-account') || 'SHIP ACC'}</div>
         <div class="awb-field field-10">${getValue('accounting-info') || 'ACCOUNTING'}</div>
         
         <!-- Routing -->
-        <div class="awb-field field-11a">${getValue('dest-iata') || 'DEST'}</div>
-        <div class="awb-field field-11b">${formatRouting()}</div>
-        <div class="awb-field field-19a">${getValue('carrier-code') || 'CR'}</div>
+        <div class="awb-field field-11a">${getValue('routing-to1') || 'TO1'}</div>
+        <div class="awb-field field-11b">${getValue('routing-by1') || 'BY1'}</div>  
+        <div class="awb-field field-11c">${getValue('routing-to2') || 'TO2'}</div>
+        <div class="awb-field field-11d">${getValue('routing-by2') || 'BY2'}</div>
+        <div class="awb-field field-11e">${getValue('routing-to3') || 'TO3'}</div>
+        <div class="awb-field field-11f">${getValue('routing-by3') || 'BY3'}</div>
+
+        <!-- Flight Details -->
+        <div class="awb-field field-19a">${getValue('flight-date') || 'DDMMYY'}</div>
         <div class="awb-field field-19b">${getValue('flight-number') || 'FLIGHT'}</div>
         
         <!-- Goods Section 22 -->
