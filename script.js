@@ -824,3 +824,101 @@ function fixCurrencySymbolVisibility() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(fixCurrencySymbolVisibility, 100);
 });
+
+// Fix currency symbol visibility
+function fixCurrencySymbolVisibility() {
+    document.querySelectorAll('.currency-input-group input').forEach(input => {
+        input.style.paddingLeft = '45px';
+    });
+}
+
+// Toggle functions for large tick buttons
+let asAgreedConversionMode = false;
+
+function toggleAsAgreedConversion() {
+    asAgreedConversionMode = !asAgreedConversionMode;
+    const button = document.getElementById('as-agreed-conversion-btn');
+    
+    if (asAgreedConversionMode) {
+        button.classList.add('active');
+        button.innerHTML = '✓ AS AGREED';
+        // Clear conversion values
+        document.getElementById('conversion-rate').value = '';
+        document.getElementById('converted-amount').value = '';
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = 'AS AGREED';
+        // Restore default conversion rate
+        document.getElementById('conversion-rate').value = '1.00';
+        updateCurrencyConversion();
+    }
+    
+    updatePreview();
+}
+
+// Update the updatePreview function to include AS AGREED for conversion
+// Replace the Currency Conversion section in updatePreview() with this:
+function updatePreview() {
+    // ... existing code ...
+    
+    preview.innerHTML = `
+        <!-- ... all existing preview content ... -->
+        
+        <!-- Currency Conversion -->
+        <div class="awb-field field-conversion-rate ${asAgreedConversionMode ? 'as-agreed' : ''}">
+            ${asAgreedConversionMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('conversion-rate') || '1.00')}
+        </div>
+        <div class="awb-field field-converted-amount ${asAgreedConversionMode ? 'as-agreed' : ''}">
+            ${asAgreedConversionMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('converted-amount') || '0.00')}
+        </div>
+        
+        <!-- ... rest of preview content ... -->
+    `;
+}
+
+// Fix payment selection
+function updatePaymentSelection() {
+    showPrepaidInPreview = document.getElementById('show-prepaid').checked;
+    showCollectionInPreview = document.getElementById('show-collection').checked;
+    
+    // Update toggle button state based on checkboxes
+    const prepaidBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'prepaid\')"]');
+    const collectionBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'collection\')"]');
+    const bothBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'both\')"]');
+    
+    if (showPrepaidInPreview && showCollectionInPreview) {
+        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
+        bothBtn.classList.add('active');
+        currentPaymentView = 'both';
+        document.getElementById('both-section').classList.add('active');
+        document.getElementById('prepaid-section').classList.remove('active');
+        document.getElementById('collection-section').classList.remove('active');
+    } else if (showPrepaidInPreview) {
+        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
+        prepaidBtn.classList.add('active');
+        currentPaymentView = 'prepaid';
+        document.getElementById('prepaid-section').classList.add('active');
+        document.getElementById('collection-section').classList.remove('active');
+        document.getElementById('both-section').classList.remove('active');
+    } else if (showCollectionInPreview) {
+        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
+        collectionBtn.classList.add('active');
+        currentPaymentView = 'collection';
+        document.getElementById('collection-section').classList.add('active');
+        document.getElementById('prepaid-section').classList.remove('active');
+        document.getElementById('both-section').classList.remove('active');
+    }
+    
+    updatePreview();
+}
+
+// Initialize the fixes when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // ... your existing initialization code ...
+    
+    // Fix currency symbol visibility
+    setTimeout(fixCurrencySymbolVisibility, 100);
+    
+    // Initialize payment selection
+    updatePaymentSelection();
+});

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete AWB Printing Software</title>
     <link rel="stylesheet" href="style.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
     <div class="container">
@@ -491,11 +494,12 @@
                             </div>
                         </div>
                         <div class="as-agreed-toggle">
-                            <button class="large-tick-btn ${asAgreedConversionMode ? 'active' : ''}" onclick="toggleAsAgreedConversion()">
-                                ${asAgreedConversionMode ? '✓' : ''} AS AGREED
+                            <button class="large-tick-btn" id="as-agreed-conversion-btn" onclick="toggleAsAgreedConversion()">
+                                AS AGREED
                             </button>
                         </div>
                     </div>
+                    <!-- Declared Values for Carriage -->
 
                     <div class="form-group">
                         <label for="value-carriage">Declared Value for Carriage (Box 13A)</label>
@@ -506,6 +510,44 @@
                         <label for="value-customs">Declared Value for Customs (Box 13B)</label>
                         <input type="text" id="value-customs" placeholder="NCV" value="NCV">
                     </div>
+
+                    <!-- Other Charges -->
+                    <!-- AWB -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="AWB" value="AWB">
+                    </div>
+                    <!-- FEC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="FEC" value="FEC">
+                    </div>
+                    <!-- BFC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="BFC" value="BFC">
+                    </div>
+                    <!-- CGC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="CGC" value="CGC">
+                    </div>
+                    <!-- MYC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="MYC" value="MYC">
+                    </div>
+                    <!-- DHC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="DHC" value="DHC">
+                    </div>
+                    <!-- SCC -->
+                    <div class="form-group">
+                        <label for="other-charges">Other Charges</label>
+                        <input type="text" id="other-charges" placeholder="SCC" value="SCC">
+                    </div>
+
                 </div>
 
             <!-- SPECIAL TAB -->
