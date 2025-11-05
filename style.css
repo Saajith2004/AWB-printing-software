@@ -149,6 +149,38 @@ textarea {
     margin-bottom: 0;
 }
 
+/* Currency Input Styles */
+.currency-input-group {
+    position: relative;
+}
+
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #495057;
+    z-index: 2;
+    background: white;
+    padding: 0 5px;
+}
+
+.currency-input-group input {
+    padding-left: 30px;
+}
+
+.currency-input-group .total-field {
+    padding-left: 30px;
+    font-weight: bold;
+}
+
 /* Section Groups */
 .section-group {
     background: #f8f9fa;
@@ -162,6 +194,73 @@ textarea {
     color: #2c3e50;
     margin-bottom: 20px;
     font-size: 16px;
+}
+
+/* Payment Toggle */
+.payment-toggle {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.payment-option {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.payment-option.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.payment-option:not(.active):hover {
+    background-color: #e8f4fd;
+}
+
+.payment-content {
+    display: none;
+}
+
+.payment-content.active {
+    display: block;
+}
+
+/* Charges Section */
+.charges-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+}
+
+.charges-section h4 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
+}
+
+.currency-conversion {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background-color: #fff9e6;
+}
+
+.currency-conversion h4 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 8px;
 }
 
 /* Rate and Dimension Tables */
@@ -330,6 +429,68 @@ textarea {
     margin-bottom: 15px;
 }
 
+/* Notifications */
+#notifications-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    padding: 15px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 350px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification.warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.notification .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
 /* Preview Styles */
 .preview-container {
     display: flex;
@@ -359,7 +520,7 @@ textarea {
 
 .awb-field {
     position: absolute;
-    border: 1px solid #000; remove border in the AWB preview 
+    border: #212529 1px solid;/* Dashed border for visibility */
     padding: 3px;
     background: transparent;
     overflow: hidden;
@@ -403,14 +564,8 @@ textarea {
 .field-11e { top: 100mm; left: 89mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
 .field-11f { top: 100mm; left: 100mm; width: 10mm; height: 10mm; align-items: center; justify-content: center; display: flex; }
 
-/* Flight Details
-.field-19a { top: 120mm; left: 20mm; width: 10mm; height: 10mm; text-align: center; }
-.field-19b { top: 120mm; left: 35mm; width: 15mm; height: 10mm; text-align: center; } */
-
 .field-13a { top: 120mm; left: 100mm; width: 20mm; height: 8mm; text-align: center; }
 .field-13b { top: 120mm; left: 125mm; width: 20mm; height: 8mm; text-align: center; }
-
-/* .field-15 { top: 130mm; left: 20mm; width: 120mm; height: 15mm; } */
 
 /* Rate Description - Separate Fields for each column */
 /* Line 1 */
@@ -462,28 +617,33 @@ textarea {
 .field-22k { top: 198mm; left: 26mm; width: 20mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 .field-22l { top: 198mm; left: 120mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 
+/* Currency and Payment Type */
+/* .field-currency { top: 260mm; left: 18mm; width: 20mm; height: 5mm; text-align: left; font-weight: bold; } */
+
 /*prepaid charges*/
-.field-weight-charge-pp { top: 220mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-valuation-charge-pp { top: 230mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-tax-pp { top: 240mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-other-agent-pp { top: 245mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-other-carrier-pp { top: 255mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-total-prepaid { top: 265mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-weight-charge-pp { top: 209mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-valuation-charge-pp { top: 216mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-tax-pp { top: 224mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-other-agent-pp { top: 231mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-other-carrier-pp { top: 239mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-total-prepaid { top: 253mm; left: 18mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; font-weight: bold; }
 
 /*collect charges*/
-.field-weight-charge-coll { top: 220mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-valuation-charge-coll { top: 230mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-tax-coll { top: 240mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-other-agent-coll { top: 245mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-other-carrier-coll { top: 255mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
-.field-cc-charges { top: 265mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }   
-.field-dest-charges { top: 275mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; } 
-.field-total-collection { top: 285mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; } 
-.field-total-collect-charges { top: 295mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }    
-
+.field-weight-charge-col { top: 209mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-valuation-charge-col { top: 216mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-tax-col { top: 224mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-other-agent-col { top: 231mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-other-carrier-col { top: 239mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-dest-charges { top: 268mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; } 
+.field-total-collection { top: 253mm; left: 53mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; } 
+.field-total-collect-charges { top: 268mm; left: 88mm; width: 35mm; height: 5mm; align-items: center; justify-content: center; display: flex; font-weight: bold; }    
 
 /*currency conversion*/
-.field-conversion-rate { top: 275mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-conversion-rate { top: 260mm; left: 18mm; width: 30mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+.field-converted-amount { top: 260mm; left: 53mm; width: 30mm; height: 5mm; align-items: center; justify-content: center; display: flex; }
+
+/* Special handling */
+.field-15 { top: 310mm; left: 18mm; width: 180mm; height: 15mm; }
 
 /* Print Styles */
 @media print {
@@ -577,58 +737,180 @@ textarea {
     }
 }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-        .container {
-            flex-direction: column;
-        }
-        
-        .form-tabs {
-            overflow-x: auto;
-        }
-        
-        .rate-header {
-            grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
-        }
-        
-        .rate-line {
-            grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
-        }
-        
-        .dimension-header {
-            grid-template-columns: 70px 90px 90px 90px 90px 70px;
-        }
-        
-        .dimension-line {
-            grid-template-columns: 70px 90px 90px 90px 90px 70px;
-        }
+/* Responsive */
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
     }
+    
+    .form-tabs {
+        overflow-x: auto;
+    }
+    
+    .rate-header {
+        grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
+    }
+    
+    .rate-line {
+        grid-template-columns: 70px 90px 50px 90px 90px 90px 90px 90px 70px;
+    }
+    
+    .dimension-header {
+        grid-template-columns: 70px 90px 90px 90px 90px 70px;
+    }
+    
+    .dimension-line {
+        grid-template-columns: 70px 90px 90px 90px 90px 70px;
+    }
+}
 
-    @media (max-width: 768px) {
-        body {
-            padding: 10px;
-        }
-        
-        .input-panel, .preview-panel {
-            padding: 15px;
-        }
-        
-        .form-tabs {
-            flex-wrap: wrap;
-        }
-        
-        .tab-button {
-            flex: 1 0 33.333%;
-            padding: 12px 15px;
-            font-size: 12px;
-        }
-        
-        .action-buttons {
-            grid-template-columns: 1fr;
-        }
-        
-        .row {
-            flex-direction: column;
-            gap: 10px;
-        }
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
     }
+    
+    .input-panel, .preview-panel {
+        padding: 15px;
+    }
+    
+    .form-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-button {
+        flex: 1 0 33.333%;
+        padding: 12px 15px;
+        font-size: 12px;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Payment Selection Styles */
+.payment-selection {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkbox-label:hover .checkmark {
+    border-color: #0056b3;
+}
+
+/* Payment Toggle with 3 options */
+.payment-toggle {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.payment-toggle .payment-option {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.payment-toggle .payment-option.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.payment-toggle .payment-option:not(.active):hover {
+    background-color: #e8f4fd;
+}
+
+/* Both section styling */
+#both-section {
+    text-align: center;
+    padding: 20px;
+}
+
+#both-section p {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Preview field styles for AS AGREED mode */
+.awb-field.as-agreed {
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+.large-tick-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #f8f9fa;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.large-tick-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+.large-tick-btn:hover {
+    background: #e8f4fd;
+}
+
+.large-tick-btn.active:hover {
+    background: #0056b3;
+}
