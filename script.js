@@ -832,9 +832,14 @@ function fixCurrencySymbolVisibility() {
     });
 }
 
-// Toggle functions for large tick buttons
-let asAgreedConversionMode = false;
+// Fix currency symbol visibility
+function fixCurrencySymbolVisibility() {
+    document.querySelectorAll('.currency-input-group input').forEach(input => {
+        input.style.paddingLeft = '45px';
+    });
+}
 
+// Toggle functions for large tick buttons
 function toggleAsAgreedConversion() {
     asAgreedConversionMode = !asAgreedConversionMode;
     const button = document.getElementById('as-agreed-conversion-btn');
