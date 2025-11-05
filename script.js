@@ -383,8 +383,36 @@ function updatePreview() {
         <div class="awb-field section-separator">---------------------</div>
         
         <!-- Charges -->
+
         <div class="awb-field field-13a">${getValue('value-carriage') || 'NVD'}</div>
         <div class="awb-field field-13b">${getValue('value-customs') || 'NCV'}</div>
+
+        <!-- Prepaid Charges Section -->
+        ${isPrepaid ? `
+            <div class="awb-field field-weight-charge-pp">${getValue('weight-charge-pp') || '0.00'}</div>
+            <div class="awb-field field-valuation-charge-pp">${getValue('valuation-charge-pp') || '0.00'}</div>
+            <div class="awb-field field-tax-pp">${getValue('tax-pp') || '0.00'}</div>
+            <div class="awb-field field-other-agent-pp">${getValue('other-charges-agent-pp') || '0.00'}</div>
+            <div class="awb-field field-other-carrier-pp">${getValue('other-charges-carrier-pp') || '0.00'}</div>
+            <div class="awb-field field-total-prepaid">${getValue('total-prepaid') || '0.00'}</div>
+        ` : ''}
+        
+        <!-- Collection Charges Section -->
+        ${!isPrepaid ? `
+            <div class="awb-field field-weight-charge-col">${getValue('weight-charge-col') || '0.00'}</div>
+            <div class="awb-field field-valuation-charge-col">${getValue('valuation-charge-col') || '0.00'}</div>
+            <div class="awb-field field-tax-col">${getValue('tax-col') || '0.00'}</div>
+            <div class="awb-field field-other-agent-col">${getValue('other-charges-agent-col') || '0.00'}</div>
+            <div class="awb-field field-other-carrier-col">${getValue('other-charges-carrier-col') || '0.00'}</div>
+            <div class="awb-field field-cc-charges">${getValue('cc-charges-dest') || '0.00'}</div>
+            <div class="awb-field field-dest-charges">${getValue('charges-at-destination') || '0.00'}</div>
+            <div class="awb-field field-total-collection">${getValue('total-collection') || '0.00'}</div>
+            <div class="awb-field field-total-collect-charges">${getValue('total-collect-charges') || '0.00'}</div>
+        ` : ''}
+        
+        <!-- Currency Conversion -->
+        <div class="awb-field field-conversion-rate">${getValue('conversion-rate') || '1.00'}</div>
+        <div class="awb-field field-converted-amount">${getValue('converted-amount') || '0.00'}</div>
         
         <!-- Special -->
         <div class="awb-field field-15">${getValue('handling-info') || ''}</div>
@@ -604,3 +632,144 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add debug after a short delay
     setTimeout(debugDimensions, 1000);
 });
+
+// Show notifications when page loads
+window.onload = function() {
+    showNotification('Welcome to AWB Printing Software!', 'success');
+    setTimeout(() => {
+        showNotification('Please select payment type: Prepaid or Collection', 'warning');
+    }, 2000);
+    
+    // Initialize currency conversion
+    updateCurrencyConversion();
+};
+
+function togglePaymentOption(type) {
+    // Update active state of toggle buttons
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show/hide relevant sections
+    document.getElementById('prepaid-section').classList.remove('active');
+    document.getElementById('collection-section').classList.remove('active');
+    document.getElementById(type + '-section').classList.add('active');
+    
+    // Update currency conversion
+    updateCurrencyConversion();
+}
+
+function calculatePrepaidTotal() {
+    const weightCharge = parseFloat(document.getElementById('weight-charge-pp').value) || 0;
+    const valuationCharge = parseFloat(document.getElementById('valuation-charge-pp').value) || 0;
+    const tax = parseFloat(document.getElementById('tax-pp').value) || 0;
+    const otherChargesAgent = parseFloat(document.getElementById('other-charges-agent-pp').value) || 0;
+    const otherChargesCarrier = parseFloat(document.getElementById('other-charges-carrier-pp').value) || 0;
+    
+    const total = weightCharge + valuationCharge + tax + otherChargesAgent + otherChargesCarrier;
+    
+    document.getElementById('total-prepaid').value = total.toFixed(2);
+    
+    // Update currency conversion
+    updateCurrencyConversion();
+}
+
+function calculateCollectionTotal() {
+    const weightCharge = parseFloat(document.getElementById('weight-charge-col').value) || 0;
+    const valuationCharge = parseFloat(document.getElementById('valuation-charge-col').value) || 0;
+    const tax = parseFloat(document.getElementById('tax-col').value) || 0;
+    const otherChargesAgent = parseFloat(document.getElementById('other-charges-agent-col').value) || 0;
+    const otherChargesCarrier = parseFloat(document.getElementById('other-charges-carrier-col').value) || 0;
+    const ccChargesDest = parseFloat(document.getElementById('cc-charges-dest').value) || 0;
+    const chargesAtDestination = parseFloat(document.getElementById('charges-at-destination').value) || 0;
+    
+    const totalCollection = weightCharge + valuationCharge + tax + otherChargesAgent + otherChargesCarrier;
+    const totalCollectCharges = totalCollection + ccChargesDest + chargesAtDestination;
+    
+    document.getElementById('total-collection').value = totalCollection.toFixed(2);
+    document.getElementById('total-collect-charges').value = totalCollectCharges.toFixed(2);
+    
+    // Update currency conversion
+    updateCurrencyConversion();
+}
+
+function updateCurrency() {
+    const currency = document.getElementById('currency-code').value;
+    showNotification(`Currency changed to ${currency}`, 'success');
+    
+    // Update currency conversion
+    updateCurrencyConversion();
+}
+
+function updateCurrencyConversion() {
+    const conversionRate = parseFloat(document.getElementById('conversion-rate').value) || 1;
+    
+    // Get the appropriate total based on active section
+    let totalAmount = 0;
+    if (document.getElementById('prepaid-section').classList.contains('active')) {
+        totalAmount = parseFloat(document.getElementById('total-prepaid').value) || 0;
+    } else {
+        totalAmount = parseFloat(document.getElementById('total-collect-charges').value) || 0;
+    }
+    
+    const convertedAmount = totalAmount * conversionRate;
+    document.getElementById('converted-amount').value = convertedAmount.toFixed(2);
+}
+
+function clearCurrentTab() {
+    // Clear all input fields
+    document.querySelectorAll('#charges-tab input').forEach(input => {
+        if (!input.readOnly && input.id !== 'conversion-rate') {
+            input.value = '';
+        }
+    });
+    
+    // Reset conversion rate
+    document.getElementById('conversion-rate').value = '1.00';
+    
+    // Reset totals
+    document.getElementById('total-prepaid').value = '';
+    document.getElementById('total-collection').value = '';
+    document.getElementById('total-collect-charges').value = '';
+    document.getElementById('converted-amount').value = '';
+    
+    // Reset to default values
+    document.getElementById('value-carriage').value = 'NVD';
+    document.getElementById('value-customs').value = 'NCV';
+    
+    // Reset to prepaid view
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.classList.remove('active');
+    });
+    document.querySelector('.payment-option').classList.add('active');
+    
+    document.getElementById('prepaid-section').classList.add('active');
+    document.getElementById('collection-section').classList.remove('active');
+    
+    showNotification('Charges tab has been cleared', 'success');
+}
+
+function showNotification(message, type = 'success') {
+    const container = document.getElementById('notifications-container');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <span>${message}</span>
+        <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
+}

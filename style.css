@@ -359,7 +359,7 @@ textarea {
 
 .awb-field {
     position: absolute;
-    /* border: 1px solid #000; remove border in the AWB preview */
+    border: 1px solid #000; remove border in the AWB preview 
     padding: 3px;
     background: transparent;
     overflow: hidden;
@@ -462,7 +462,28 @@ textarea {
 .field-22k { top: 198mm; left: 26mm; width: 20mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 .field-22l { top: 198mm; left: 120mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 
+/*prepaid charges*/
+.field-weight-charge-pp { top: 220mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-valuation-charge-pp { top: 230mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-tax-pp { top: 240mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-other-agent-pp { top: 245mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-other-carrier-pp { top: 255mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-total-prepaid { top: 265mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 
+/*collect charges*/
+.field-weight-charge-coll { top: 220mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-valuation-charge-coll { top: 230mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-tax-coll { top: 240mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-other-agent-coll { top: 245mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-other-carrier-coll { top: 255mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
+.field-cc-charges { top: 265mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }   
+.field-dest-charges { top: 275mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; } 
+.field-total-collection { top: 285mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; } 
+.field-total-collect-charges { top: 295mm; left: 100mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }    
+
+
+/*currency conversion*/
+.field-conversion-rate { top: 275mm; left: 18mm; width: 25mm; height: 8mm; align-items: center; justify-content: center; display: flex; }
 
 /* Print Styles */
 @media print {
