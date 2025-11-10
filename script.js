@@ -16,62 +16,52 @@ let currentCurrency = 'USD';
 let currentCurrencySymbol = '$';
 let destinationCurrency = 'LKR';
 let destinationCurrencySymbol = 'Rs';
-let asAgreedMode = false;
+
+// AS AGREED modes
+let asAgreedPrepaidMode = false;
+let asAgreedCollectionMode = false;
 let asAgreedConversionMode = false;
 
 // Payment selection state
 let showPrepaidInPreview = true;
 let showCollectionInPreview = false;
-let currentPaymentView = 'prepaid'; // 'prepaid', 'collection', or 'both'
+let currentPaymentType = 'prepaid'; // 'prepaid' or 'collection'
 
 // Global variables
 let rateLines = 0;
 let dimensionLines = 0;
 
-// Enhanced error handling
-console.log('Script loaded successfully');
-
-// Check if all required elements exist
-function checkRequiredElements() {
-    const requiredElements = [
-        'awb-preview',
-        'rate-lines-container',
-        'dimension-lines-container'
-    ];
-    
-    requiredElements.forEach(id => {
-        const element = document.getElementById(id);
-        if (!element) {
-            console.error('Missing required element:', id);
-        } else {
-            console.log('Found element:', id);
-        }
-    });
-}
-
+// Initialize when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded');
-    checkRequiredElements();
+    console.log('Initializing AWB Software...');
+    
+    // Initialize core functionality
     initializeTabs();
     initializeRateLines();
     initializeDimensionLines();
-    setupEventListeners();
     setDefaultValues();
     
-    // Set default destination currency to LKR
-    document.getElementById('destination-currency').value = 'LKR';
-    destinationCurrency = 'LKR';
-    destinationCurrencySymbol = 'Rs';
+    // Set default currencies
+    if (document.getElementById('destination-currency')) {
+        document.getElementById('destination-currency').value = 'LKR';
+        destinationCurrency = 'LKR';
+        destinationCurrencySymbol = 'Rs';
+    }
     
-    // Update all currency symbols
+    // Update currency symbols
     updateAllCurrencySymbols();
-    updatePreview();
+    
+    // Fix currency symbol visibility
+    setTimeout(fixCurrencySymbolVisibility, 100);
+    
+    // Setup event listeners for auto-update
+    setupEventListeners();
+    
+    // Initial preview update
+    setTimeout(updatePreview, 500);
     
     // Show welcome notifications
     showNotification('Welcome to AWB Printing Software!', 'success');
-    setTimeout(() => {
-        showNotification('Please select payment type: Prepaid or Collection', 'warning');
-    }, 2000);
 });
 
 // Tab management
@@ -79,19 +69,12 @@ function initializeTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    console.log('Found tab buttons:', tabButtons.length);
-    console.log('Found tab contents:', tabContents.length);
-    
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const tabId = this.getAttribute('data-tab');
-            console.log('Tab clicked:', tabId);
             
             // Remove active class from all tabs and buttons
-            tabContents.forEach(tab => {
-                tab.classList.remove('active');
-                console.log('Removed active from:', tab.id);
-            });
+            tabContents.forEach(tab => tab.classList.remove('active'));
             tabButtons.forEach(btn => btn.classList.remove('active'));
             
             // Add active class to current tab and button
@@ -99,9 +82,6 @@ function initializeTabs() {
             if (activeTab) {
                 activeTab.classList.add('active');
                 this.classList.add('active');
-                console.log('Added active to:', tabId);
-            } else {
-                console.error('Tab not found:', tabId);
             }
         });
     });
@@ -112,19 +92,153 @@ function initializeTabs() {
     }
 }
 
+// Payment Type Selection
+function selectPaymentType(type) {
+    currentPaymentType = type;
+    
+    // Update active state
+    document.querySelectorAll('.payment-type-option').forEach(option => {
+        option.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show/hide sections
+    document.getElementById('prepaid-section').classList.remove('active');
+    document.getElementById('collection-section').classList.remove('active');
+    
+    if (type === 'prepaid') {
+        document.getElementById('prepaid-section').classList.add('active');
+        showPrepaidInPreview = true;
+        showCollectionInPreview = false;
+    } else if (type === 'collection') {
+        document.getElementById('collection-section').classList.add('active');
+        showPrepaidInPreview = false;
+        showCollectionInPreview = true;
+    }
+    
+    updatePreview();
+}
+
+// Toggle AS AGREED for Prepaid
+function toggleAsAgreedPrepaid() {
+    asAgreedPrepaidMode = !asAgreedPrepaidMode;
+    const button = document.getElementById('as-agreed-prepaid-btn');
+    
+    if (asAgreedPrepaidMode) {
+        button.classList.add('active');
+        button.innerHTML = '✓ AS AGREED';
+        // Clear prepaid charge values
+        clearPrepaidChargeValues();
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = 'AS AGREED';
+        // Restore default prepaid values
+        restoreDefaultPrepaidValues();
+    }
+    
+    updatePreview();
+}
+
+// Toggle AS AGREED for Collection
+function toggleAsAgreedCollection() {
+    asAgreedCollectionMode = !asAgreedCollectionMode;
+    const button = document.getElementById('as-agreed-collection-btn');
+    
+    if (asAgreedCollectionMode) {
+        button.classList.add('active');
+        button.innerHTML = '✓ AS AGREED';
+        // Clear collection charge values
+        clearCollectionChargeValues();
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = 'AS AGREED';
+        // Restore default collection values
+        restoreDefaultCollectionValues();
+    }
+    
+    updatePreview();
+}
+
+// Toggle AS AGREED for Conversion
+function toggleAsAgreedConversion() {
+    asAgreedConversionMode = !asAgreedConversionMode;
+    const button = document.getElementById('as-agreed-conversion-btn');
+    
+    if (asAgreedConversionMode) {
+        button.classList.add('active');
+        button.innerHTML = '✓ AS AGREED';
+        document.getElementById('conversion-rate').value = '';
+        document.getElementById('converted-amount').value = '';
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = 'AS AGREED';
+        document.getElementById('conversion-rate').value = '1.00';
+        updateCurrencyConversion();
+    }
+    
+    updatePreview();
+}
+
+// Clear prepaid charge values
+function clearPrepaidChargeValues() {
+    document.getElementById('weight-charge-pp').value = '';
+    document.getElementById('valuation-charge-pp').value = '';
+    document.getElementById('tax-pp').value = '';
+    document.getElementById('other-charges-agent-pp').value = '';
+    document.getElementById('other-charges-carrier-pp').value = '';
+    document.getElementById('total-prepaid').value = '';
+}
+
+// Clear collection charge values
+function clearCollectionChargeValues() {
+    document.getElementById('weight-charge-col').value = '';
+    document.getElementById('valuation-charge-col').value = '';
+    document.getElementById('tax-col').value = '';
+    document.getElementById('other-charges-agent-col').value = '';
+    document.getElementById('other-charges-carrier-col').value = '';
+    document.getElementById('cc-charges-dest').value = '';
+    document.getElementById('charges-at-destination').value = '';
+    document.getElementById('total-collection').value = '';
+    document.getElementById('total-collect-charges').value = '';
+}
+
+// Restore default prepaid values
+function restoreDefaultPrepaidValues() {
+    document.getElementById('weight-charge-pp').value = '0.00';
+    document.getElementById('valuation-charge-pp').value = '0.00';
+    document.getElementById('tax-pp').value = '0.00';
+    document.getElementById('other-charges-agent-pp').value = '0.00';
+    document.getElementById('other-charges-carrier-pp').value = '0.00';
+    calculatePrepaidTotal();
+}
+
+// Restore default collection values
+function restoreDefaultCollectionValues() {
+    document.getElementById('weight-charge-col').value = '0.00';
+    document.getElementById('valuation-charge-col').value = '0.00';
+    document.getElementById('tax-col').value = '0.00';
+    document.getElementById('other-charges-agent-col').value = '0.00';
+    document.getElementById('other-charges-carrier-col').value = '0.00';
+    document.getElementById('cc-charges-dest').value = '0.00';
+    document.getElementById('charges-at-destination').value = '0.00';
+    calculateCollectionTotal();
+}
+
 // Rate Lines Management
 function initializeRateLines() {
     addRateLine(); // Add first rate line by default
 }
 
 function addRateLine() {
-    const maxLines = 1; // Set maximum lines
+    const maxLines = 1;
     if (rateLines >= maxLines) {
         alert(`Maximum ${maxLines} rate lines allowed`);
         return;
     }
 
     const container = document.getElementById('rate-lines-container');
+    if (!container) return;
+
     rateLines++;
     
     const rateLine = document.createElement('div');
@@ -194,13 +308,12 @@ function calculateRateLine() {
     document.getElementById('total-weight-display').textContent = totalWeight.toFixed(1);
     document.getElementById('total-charge-display').textContent = totalCharge.toFixed(2);
     
-    // Update preview when rates change
     updatePreview();
 }
 
 // Dimension Lines Management
 function initializeDimensionLines() {
-    addDimensionLine(); // Add first dimension line by default
+    addDimensionLine();
 }
 
 function addDimensionLine() {
@@ -211,6 +324,8 @@ function addDimensionLine() {
     }
     
     const container = document.getElementById('dimension-lines-container');
+    if (!container) return;
+
     dimensionLines++;
     
     const dimensionLine = document.createElement('div');
@@ -227,7 +342,6 @@ function addDimensionLine() {
     container.appendChild(dimensionLine);
     document.getElementById('dimension-line-count').textContent = dimensionLines;
     
-    // Add event listeners to new inputs
     const inputs = dimensionLine.querySelectorAll('input');
     inputs.forEach(input => {
         input.addEventListener('input', calculateDimensionLine);
@@ -254,21 +368,18 @@ function calculateDimensionLine() {
         const length = parseFloat(line.querySelector('.dim-length').value) || 0;
         const width = parseFloat(line.querySelector('.dim-width').value) || 0;
         const height = parseFloat(line.querySelector('.dim-height').value) || 0;
-        const lineVolume = (length * width * height * pieces) / 1000000; // Convert to CBM
+        const lineVolume = (length * width * height * pieces) / 1000000;
         
         line.querySelector('.line-volume').value = lineVolume.toFixed(3);
         totalVolume += lineVolume;
     });
     
     document.getElementById('total-volume-display').textContent = totalVolume.toFixed(3) + ' CBM';
-    
-    // Update preview when dimensions change
     updatePreview();
 }
 
-// Setup event listeners
+// Setup event listeners for auto-update
 function setupEventListeners() {
-    // Auto-update preview on input changes
     const previewInputs = document.querySelectorAll('input, textarea, select');
     previewInputs.forEach(input => {
         input.addEventListener('input', function() {
@@ -279,9 +390,14 @@ function setupEventListeners() {
 
 function setDefaultValues() {
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('flight-date').value = today;
-    document.getElementById('value-carriage').value = 'NVD';
-    document.getElementById('value-customs').value = 'NCV';
+    const flightDate = document.getElementById('flight-date');
+    if (flightDate) flightDate.value = today;
+    
+    const valueCarriage = document.getElementById('value-carriage');
+    if (valueCarriage) valueCarriage.value = 'NVD';
+    
+    const valueCustoms = document.getElementById('value-customs');
+    if (valueCustoms) valueCustoms.value = 'NCV';
 }
 
 // Currency Functions
@@ -289,22 +405,19 @@ function updateCurrency() {
     const currencySelect = document.getElementById('currency-code');
     const destCurrencySelect = document.getElementById('destination-currency');
     
-    currentCurrency = currencySelect.value;
-    currentCurrencySymbol = currencySymbols[currentCurrency] || '$';
-    destinationCurrency = destCurrencySelect.value;
-    destinationCurrencySymbol = currencySymbols[destinationCurrency] || 'Rs';
-    
-    // Update all currency symbols in form
-    updateAllCurrencySymbols();
-    
-    // Update preview
-    updatePreview();
-    
-    showNotification(`Currency changed to ${currentCurrency}`, 'success');
+    if (currencySelect && destCurrencySelect) {
+        currentCurrency = currencySelect.value;
+        currentCurrencySymbol = currencySymbols[currentCurrency] || '$';
+        destinationCurrency = destCurrencySelect.value;
+        destinationCurrencySymbol = currencySymbols[destinationCurrency] || 'Rs';
+        
+        updateAllCurrencySymbols();
+        updatePreview();
+        showNotification(`Currency changed to ${currentCurrency}`, 'success');
+    }
 }
 
 function updateAllCurrencySymbols() {
-    // Update main currency symbols
     document.querySelectorAll('.currency-symbol').forEach(symbol => {
         const fieldId = symbol.id;
         if (fieldId.includes('cc-charges') || fieldId.includes('charges-at-destination') || fieldId.includes('converted-amount')) {
@@ -315,82 +428,10 @@ function updateAllCurrencySymbols() {
     });
 }
 
-// Payment toggle functions
-function togglePaymentOption(type) {
-    // Update active state of toggle buttons
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.classList.remove('active');
+function fixCurrencySymbolVisibility() {
+    document.querySelectorAll('.currency-input-group input').forEach(input => {
+        input.style.paddingLeft = '45px';
     });
-    event.target.classList.add('active');
-    
-    // Show/hide relevant sections
-    document.getElementById('prepaid-section').classList.remove('active');
-    document.getElementById('collection-section').classList.remove('active');
-    document.getElementById('both-section').classList.remove('active');
-    
-    currentPaymentView = type;
-    
-    if (type === 'both') {
-        document.getElementById('both-section').classList.add('active');
-        // Enable both checkboxes
-        document.getElementById('show-prepaid').checked = true;
-        document.getElementById('show-collection').checked = true;
-        showPrepaidInPreview = true;
-        showCollectionInPreview = true;
-    } else if (type === 'prepaid') {
-        document.getElementById('prepaid-section').classList.add('active');
-        document.getElementById('show-prepaid').checked = true;
-        document.getElementById('show-collection').checked = false;
-        showPrepaidInPreview = true;
-        showCollectionInPreview = false;
-    } else if (type === 'collection') {
-        document.getElementById('collection-section').classList.add('active');
-        document.getElementById('show-prepaid').checked = false;
-        document.getElementById('show-collection').checked = true;
-        showPrepaidInPreview = false;
-        showCollectionInPreview = true;
-    }
-    
-    // Update preview
-    updatePreview();
-}
-
-function updatePaymentSelection() {
-    showPrepaidInPreview = document.getElementById('show-prepaid').checked;
-    showCollectionInPreview = document.getElementById('show-collection').checked;
-    
-    // Update toggle button state based on checkboxes
-    if (showPrepaidInPreview && showCollectionInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove('active');
-        });
-        document.querySelector('.payment-option[onclick="togglePaymentOption(\'both\')"]').classList.add('active');
-        currentPaymentView = 'both';
-    } else if (showPrepaidInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove('active');
-        });
-        document.querySelector('.payment-option[onclick="togglePaymentOption(\'prepaid\')"]').classList.add('active');
-        currentPaymentView = 'prepaid';
-    } else if (showCollectionInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.classList.remove('active');
-        });
-        document.querySelector('.payment-option[onclick="togglePaymentOption(\'collection\')"]').classList.add('active');
-        currentPaymentView = 'collection';
-    }
-    
-    updatePreview();
-}
-
-function updateAsAgreedMode() {
-    asAgreedMode = document.getElementById('as-agreed-mode').checked;
-    updatePreview();
-}
-
-function updateAsAgreedConversionMode() {
-    asAgreedConversionMode = document.getElementById('as-agreed-conversion-mode').checked;
-    updatePreview();
 }
 
 // Charge Calculation Functions
@@ -403,12 +444,10 @@ function calculatePrepaidTotal() {
     
     const total = weightCharge + valuationCharge + tax + otherChargesAgent + otherChargesCarrier;
     
-    document.getElementById('total-prepaid').value = total.toFixed(2);
+    const totalPrepaid = document.getElementById('total-prepaid');
+    if (totalPrepaid) totalPrepaid.value = total.toFixed(2);
     
-    // Update currency conversion
     updateCurrencyConversion();
-    
-    // Update preview
     updatePreview();
 }
 
@@ -424,87 +463,90 @@ function calculateCollectionTotal() {
     const totalCollection = weightCharge + valuationCharge + tax + otherChargesAgent + otherChargesCarrier;
     const totalCollectCharges = totalCollection + ccChargesDest + chargesAtDestination;
     
-    document.getElementById('total-collection').value = totalCollection.toFixed(2);
-    document.getElementById('total-collect-charges').value = totalCollectCharges.toFixed(2);
+    const totalCollectionField = document.getElementById('total-collection');
+    const totalCollectChargesField = document.getElementById('total-collect-charges');
     
-    // Update currency conversion
+    if (totalCollectionField) totalCollectionField.value = totalCollection.toFixed(2);
+    if (totalCollectChargesField) totalCollectChargesField.value = totalCollectCharges.toFixed(2);
+    
     updateCurrencyConversion();
-    
-    // Update preview
     updatePreview();
 }
 
 function updateCurrencyConversion() {
     const conversionRate = parseFloat(document.getElementById('conversion-rate').value) || 1;
-    
-    // Get the appropriate total based on active section
     let totalAmount = 0;
-    const isPrepaid = document.getElementById('prepaid-section').classList.contains('active');
     
-    if (isPrepaid) {
+    if (currentPaymentType === 'prepaid') {
         totalAmount = parseFloat(document.getElementById('total-prepaid').value) || 0;
     } else {
         totalAmount = parseFloat(document.getElementById('total-collect-charges').value) || 0;
     }
     
     const convertedAmount = totalAmount * conversionRate;
-    document.getElementById('converted-amount').value = convertedAmount.toFixed(2);
+    const convertedAmountField = document.getElementById('converted-amount');
+    if (convertedAmountField) convertedAmountField.value = convertedAmount.toFixed(2);
     
-    // Update preview
     updatePreview();
 }
 
-// Main Preview Function
+// MAIN PREVIEW FUNCTION - UPDATED
 function updatePreview() {
     const preview = document.getElementById('awb-preview');
-    const awbNumber = getValue('awb-number-1a') || '';
-    const awbSuffix = getValue('awb-number-1b') || '';
+    if (!preview) {
+        console.error('Preview element not found!');
+        return;
+    }
+    
+    // Get basic values with fallbacks
+    const awbNumber = getValue('awb-number-1a') || '618';
+    const awbSuffix = getValue('awb-number-1b') || '12345675';
     
     preview.innerHTML = `
         <!-- AWB Number Fields -->
-        <div class="awb-field field-1a">${awbNumber || '618'}</div>
-        <div class="awb-field field-1b">${awbSuffix || '12345675'}</div>
+        <div class="awb-field field-1a">${awbNumber}</div>
+        <div class="awb-field field-1b">${awbSuffix}</div>
         <div class="awb-field field-1">${getValue('origin-iata') || 'ORG'}</div>
 
-        <!-- DUPLICATE FIELDS IN NEW POSITION-1 -->
-        <div class="awb-field field-1a-copy">${awbNumber || '618'}</div>
+        <!-- DUPLICATE FIELDS -->
+        <div class="awb-field field-1a-copy">${awbNumber}</div>
         <div class="awb-field field-hyphen">-</div>
-        <div class="awb-field field-1b-copy">${awbSuffix || '12345675'}</div>
+        <div class="awb-field field-1b-copy">${awbSuffix}</div>
 
-        <div class="awb-field field-1a-copy-1">${awbNumber || '618'}</div>
+        <div class="awb-field field-1a-copy-1">${awbNumber}</div>
         <div class="awb-field field-hyphen-1">-</div>
-        <div class="awb-field field-1b-copy-1">${awbSuffix || '12345675'}</div>
+        <div class="awb-field field-1b-copy-1">${awbSuffix}</div>
 
         <!-- Shipper -->
         <div class="awb-field field-3">${formatShipper()}</div>
-        <div class="awb-field field-3a">${getValue('shipper-account') || 'SHIP ACC'}</div>
+        <div class="awb-field field-3a">${getValue('shipper-account') || ''}</div>
 
         <!-- Consignee -->
         <div class="awb-field field-5">${formatConsignee()}</div>
-        <div class="awb-field field-5a">${getValue('consignee-account') || 'CNE ACC'}</div>
+        <div class="awb-field field-5a">${getValue('consignee-account') || ''}</div>
         
         <!-- Agent Details -->
-        <div class="awb-field field-6">${getValue('agent-name') || 'AGENT'}</div>
-        <div class="awb-field field-7">${getValue('agent-iata') || 'IATA'}</div>
-        <div class="awb-field field-8">${getValue('agent-account') || 'ACC'}</div>
-        <div class="awb-field field-10">${getValue('accounting-info') || 'ACCOUNTING'}</div>
+        <div class="awb-field field-6">${getValue('agent-name') || ''}</div>
+        <div class="awb-field field-7">${getValue('agent-iata') || ''}</div>
+        <div class="awb-field field-8">${getValue('agent-account') || ''}</div>
+        <div class="awb-field field-10">${getValue('accounting-info') || ''}</div>
         
         <!-- Routing -->
-        <div class="awb-field field-11a">${getValue('routing-to1') || 'TO1'}</div>
-        <div class="awb-field field-11b">${getValue('routing-by1') || 'BY1'}</div>  
-        <div class="awb-field field-11c">${getValue('routing-to2') || 'TO2'}</div>
-        <div class="awb-field field-11d">${getValue('routing-by2') || 'BY2'}</div>
-        <div class="awb-field field-11e">${getValue('routing-to3') || 'TO3'}</div>
-        <div class="awb-field field-11f">${getValue('routing-by3') || 'BY3'}</div>
+        <div class="awb-field field-11a">${getValue('routing-to1') || ''}</div>
+        <div class="awb-field field-11b">${getValue('routing-by1') || ''}</div>  
+        <div class="awb-field field-11c">${getValue('routing-to2') || ''}</div>
+        <div class="awb-field field-11d">${getValue('routing-by2') || ''}</div>
+        <div class="awb-field field-11e">${getValue('routing-to3') || ''}</div>
+        <div class="awb-field field-11f">${getValue('routing-by3') || ''}</div>
 
         <!-- Flight Details -->
         <div class="awb-field field-19a">${formatFlightDate()}</div>
-        <div class="awb-field field-19b">${getValue('flight-number') || 'FLIGHT'}</div>
+        <div class="awb-field field-19b">${getValue('flight-number') || ''}</div>
         
         <!-- Goods Section 22 - Totals -->
-        <div class="awb-field field-22j">${document.getElementById('total-pieces-display').textContent}</div>
-        <div class="awb-field field-22k">${document.getElementById('total-weight-display').textContent}</div>
-        <div class="awb-field field-22l">${document.getElementById('total-charge-display').textContent}</div>
+        <div class="awb-field field-22j">${document.getElementById('total-pieces-display')?.textContent || '0'}</div>
+        <div class="awb-field field-22k">${document.getElementById('total-weight-display')?.textContent || '0.0'}</div>
+        <div class="awb-field field-22l">${document.getElementById('total-charge-display')?.textContent || '0.00'}</div>
 
         <!-- RATE DESCRIPTION LINES -->
         ${generateRateLinesPreview()}
@@ -518,9 +560,6 @@ function updatePreview() {
         <!-- Goods Description -->
         <div class="awb-field field-22i">${getValue('goods-description') || ''}</div>
         
-        <!-- SEPARATOR LINES -->
-        <div class="awb-field section-separator">---------------------</div>
-        
         <!-- Currency and Payment Type -->
         <div class="awb-field field-currency">${currentCurrency}</div>
         <div class="awb-field field-payment-type">${getPaymentTypeDisplay()}</div>
@@ -530,31 +569,18 @@ function updatePreview() {
         <div class="awb-field field-13b">${getValue('value-customs') || 'NCV'}</div>
 
         <!-- Prepaid Charges Section -->
-        ${showPrepaidInPreview ? `
-            <div class="awb-field field-weight-charge-pp ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('weight-charge-pp') || '0.00')}</div>
-            <div class="awb-field field-valuation-charge-pp ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('valuation-charge-pp') || '0.00')}</div>
-            <div class="awb-field field-tax-pp ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('tax-pp') || '0.00')}</div>
-            <div class="awb-field field-other-agent-pp ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('other-charges-agent-pp') || '0.00')}</div>
-            <div class="awb-field field-other-carrier-pp ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('other-charges-carrier-pp') || '0.00')}</div>
-            <div class="awb-field field-total-prepaid ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('total-prepaid') || '0.00')}</div>
-        ` : ''}
+        ${showPrepaidInPreview ? generatePrepaidChargesPreview() : ''}
         
         <!-- Collection Charges Section -->
-        ${showCollectionInPreview ? `
-            <div class="awb-field field-weight-charge-col ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('weight-charge-col') || '0.00')}</div>
-            <div class="awb-field field-valuation-charge-col ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('valuation-charge-col') || '0.00')}</div>
-            <div class="awb-field field-tax-col ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('tax-col') || '0.00')}</div>
-            <div class="awb-field field-other-agent-col ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('other-charges-agent-col') || '0.00')}</div>
-            <div class="awb-field field-other-carrier-col ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('other-charges-carrier-col') || '0.00')}</div>
-            <div class="awb-field field-cc-charges ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('cc-charges-dest') || '0.00')}</div>
-            <div class="awb-field field-dest-charges ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('charges-at-destination') || '0.00')}</div>
-            <div class="awb-field field-total-collection ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('total-collection') || '0.00')}</div>
-            <div class="awb-field field-total-collect-charges ${asAgreedMode ? 'as-agreed' : ''}">${asAgreedMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('total-collect-charges') || '0.00')}</div>
-        ` : ''}
+        ${showCollectionInPreview ? generateCollectionChargesPreview() : ''}
         
         <!-- Currency Conversion -->
-        <div class="awb-field field-conversion-rate ${asAgreedConversionMode ? 'as-agreed' : ''}">${asAgreedConversionMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('conversion-rate') || '1.00')}</div>
-        <div class="awb-field field-converted-amount ${asAgreedConversionMode ? 'as-agreed' : ''}">${asAgreedConversionMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('converted-amount') || '0.00')}</div>
+        <div class="awb-field field-conversion-rate ${asAgreedConversionMode ? 'as-agreed' : ''}">
+            ${asAgreedConversionMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('conversion-rate') || '1.00')}
+        </div>
+        <div class="awb-field field-converted-amount ${asAgreedConversionMode ? 'as-agreed' : ''}">
+            ${asAgreedConversionMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('converted-amount') || '0.00')}
+        </div>
         
         <!-- Special -->
         <div class="awb-field field-15">${getValue('handling-info') || ''}</div>
@@ -591,7 +617,7 @@ function formatConsignee() {
 
 function formatFlightDate() {
     const date = getValue('flight-date');
-    if (!date) return 'DDMMYY';
+    if (!date) return '';
     
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
@@ -601,7 +627,6 @@ function formatFlightDate() {
     return `${day}${month}${year}`;
 }
 
-// Helper function for payment type display
 function getPaymentTypeDisplay() {
     if (showPrepaidInPreview && showCollectionInPreview) {
         return 'PP/CC';
@@ -618,7 +643,7 @@ function generateRateLinesPreview() {
     let html = '';
     
     rateLines.forEach((line, index) => {
-        if (index < 1) { // Limit to 1 line in preview
+        if (index < 1) {
             const pieces = line.querySelector('.pieces').value || '0';
             const weight = line.querySelector('.weight').value || '0.0';
             const unit = line.querySelector('.unit').value || 'K';
@@ -628,17 +653,15 @@ function generateRateLinesPreview() {
             const rateCharge = line.querySelector('.rate-charge').value || '0.00';
             const total = line.querySelector('.line-total').value || '0.00';
             
-            const lineNumber = index + 1;
-            
             html += `
-                <div class="awb-field rate-pieces-${lineNumber}">${pieces}</div>
-                <div class="awb-field rate-weight-${lineNumber}">${weight}</div>
-                <div class="awb-field rate-unit-${lineNumber}">${unit}</div>
-                <div class="awb-field rate-class-${lineNumber}">${rateClass}</div>
-                <div class="awb-field rate-commodity-${lineNumber}">${commodity}</div>
-                <div class="awb-field rate-charge-weight-${lineNumber}">${chargeWeight}</div>
-                <div class="awb-field rate-charge-${lineNumber}">${rateCharge}</div>
-                <div class="awb-field rate-total-${lineNumber}">${total}</div>
+                <div class="awb-field rate-pieces-${index + 1}">${pieces}</div>
+                <div class="awb-field rate-weight-${index + 1}">${weight}</div>
+                <div class="awb-field rate-unit-${index + 1}">${unit}</div>
+                <div class="awb-field rate-class-${index + 1}">${rateClass}</div>
+                <div class="awb-field rate-commodity-${index + 1}">${commodity}</div>
+                <div class="awb-field rate-charge-weight-${index + 1}">${chargeWeight}</div>
+                <div class="awb-field rate-charge-${index + 1}">${rateCharge}</div>
+                <div class="awb-field rate-total-${index + 1}">${total}</div>
             `;
         }
     });
@@ -681,6 +704,57 @@ function getTotalDimensionVolume() {
     return totalVolume.toFixed(3) + ' CBM';
 }
 
+// UPDATED: Generate prepaid charges preview with separate AS AGREED mode
+function generatePrepaidChargesPreview() {
+    if (asAgreedPrepaidMode) {
+        return `
+            <div class="awb-field field-weight-charge-pp as-agreed">AS AGREED</div>
+            <div class="awb-field field-valuation-charge-pp as-agreed">AS AGREED</div>
+            <div class="awb-field field-tax-pp as-agreed">AS AGREED</div>
+            <div class="awb-field field-other-agent-pp as-agreed">AS AGREED</div>
+            <div class="awb-field field-other-carrier-pp as-agreed">AS AGREED</div>
+            <div class="awb-field field-total-prepaid as-agreed">AS AGREED</div>
+        `;
+    } else {
+        return `
+            <div class="awb-field field-weight-charge-pp">${currentCurrencySymbol} ${getValue('weight-charge-pp') || '0.00'}</div>
+            <div class="awb-field field-valuation-charge-pp">${currentCurrencySymbol} ${getValue('valuation-charge-pp') || '0.00'}</div>
+            <div class="awb-field field-tax-pp">${currentCurrencySymbol} ${getValue('tax-pp') || '0.00'}</div>
+            <div class="awb-field field-other-agent-pp">${currentCurrencySymbol} ${getValue('other-charges-agent-pp') || '0.00'}</div>
+            <div class="awb-field field-other-carrier-pp">${currentCurrencySymbol} ${getValue('other-charges-carrier-pp') || '0.00'}</div>
+            <div class="awb-field field-total-prepaid">${currentCurrencySymbol} ${getValue('total-prepaid') || '0.00'}</div>
+        `;
+    }
+}
+
+// UPDATED: Generate collection charges preview with separate AS AGREED mode
+function generateCollectionChargesPreview() {
+    if (asAgreedCollectionMode) {
+        return `
+            <div class="awb-field field-weight-charge-col as-agreed">AS AGREED</div>
+            <div class="awb-field field-valuation-charge-col as-agreed">AS AGREED</div>
+            <div class="awb-field field-tax-col as-agreed">AS AGREED</div>
+            <div class="awb-field field-other-agent-col as-agreed">AS AGREED</div>
+            <div class="awb-field field-other-carrier-col as-agreed">AS AGREED</div>
+            <div class="awb-field field-cc-charges as-agreed">AS AGREED</div>
+            <div class="awb-field field-dest-charges as-agreed">AS AGREED</div>
+            <div class="awb-field field-total-collection as-agreed">AS AGREED</div>
+            <div class="awb-field field-total-collect-charges as-agreed">AS AGREED</div>
+        `;
+    } else {
+        return `
+            <div class="awb-field field-weight-charge-col">${currentCurrencySymbol} ${getValue('weight-charge-col') || '0.00'}</div>
+            <div class="awb-field field-valuation-charge-col">${currentCurrencySymbol} ${getValue('valuation-charge-col') || '0.00'}</div>
+            <div class="awb-field field-tax-col">${currentCurrencySymbol} ${getValue('tax-col') || '0.00'}</div>
+            <div class="awb-field field-other-agent-col">${currentCurrencySymbol} ${getValue('other-charges-agent-col') || '0.00'}</div>
+            <div class="awb-field field-other-carrier-col">${currentCurrencySymbol} ${getValue('other-charges-carrier-col') || '0.00'}</div>
+            <div class="awb-field field-dest-charges">${destinationCurrencySymbol} ${getValue('charges-at-destination') || '0.00'}</div>
+            <div class="awb-field field-total-collection">${currentCurrencySymbol} ${getValue('total-collection') || '0.00'}</div>
+            <div class="awb-field field-total-collect-charges">${currentCurrencySymbol} ${getValue('total-collect-charges') || '0.00'}</div>
+        `;
+    }
+}
+
 // Clear functions
 function clearCurrentTab() {
     const activeTab = document.querySelector('.tab-content.active');
@@ -690,6 +764,36 @@ function clearCurrentTab() {
             input.value = '';
         }
     });
+    
+    // Reset AS AGREED modes for charges tab
+    if (activeTab.id === 'charges-tab') {
+        asAgreedPrepaidMode = false;
+        asAgreedCollectionMode = false;
+        asAgreedConversionMode = false;
+        
+        const prepaidBtn = document.getElementById('as-agreed-prepaid-btn');
+        const collectionBtn = document.getElementById('as-agreed-collection-btn');
+        const conversionBtn = document.getElementById('as-agreed-conversion-btn');
+        
+        if (prepaidBtn) {
+            prepaidBtn.classList.remove('active');
+            prepaidBtn.innerHTML = 'AS AGREED';
+        }
+        if (collectionBtn) {
+            collectionBtn.classList.remove('active');
+            collectionBtn.innerHTML = 'AS AGREED';
+        }
+        if (conversionBtn) {
+            conversionBtn.classList.remove('active');
+            conversionBtn.innerHTML = 'AS AGREED';
+        }
+        
+        restoreDefaultPrepaidValues();
+        restoreDefaultCollectionValues();
+        document.getElementById('conversion-rate').value = '1.00';
+        updateCurrencyConversion();
+    }
+    
     updatePreview();
 }
 
@@ -700,61 +804,37 @@ function clearAllTabs() {
             input.value = '';
         }
     });
+    
+    // Reset all AS AGREED modes
+    asAgreedPrepaidMode = false;
+    asAgreedCollectionMode = false;
+    asAgreedConversionMode = false;
+    
+    const prepaidBtn = document.getElementById('as-agreed-prepaid-btn');
+    const collectionBtn = document.getElementById('as-agreed-collection-btn');
+    const conversionBtn = document.getElementById('as-agreed-conversion-btn');
+    
+    if (prepaidBtn) {
+        prepaidBtn.classList.remove('active');
+        prepaidBtn.innerHTML = 'AS AGREED';
+    }
+    if (collectionBtn) {
+        collectionBtn.classList.remove('active');
+        collectionBtn.innerHTML = 'AS AGREED';
+    }
+    if (conversionBtn) {
+        conversionBtn.classList.remove('active');
+        conversionBtn.innerHTML = 'AS AGREED';
+    }
+    
     setDefaultValues();
     updatePreview();
-}
-
-// FWB Generation
-function generateFWB() {
-    const fwbMessage = buildFWBMessage();
-    document.getElementById('fwb-message').value = fwbMessage;
-    document.getElementById('fwb-output').style.display = 'block';
-}
-
-function buildFWBMessage() {
-    let fwb = 'FWB/1\n';
-    
-    // Basic consignment info
-    fwb += `${getValue('awb-number-1a') || '000'}${getValue('awb-number-1b') || '00000000'}${getValue('origin-iata') || 'XXX'}/`;
-    fwb += `T${document.getElementById('total-pieces-display').textContent}K${document.getElementById('total-weight-display').textContent}\n`;
-    
-    // Shipper
-    if (getValue('shipper-name')) {
-        fwb += `SHP\n/${getValue('shipper-name')}\n`;
-        fwb += `/${getValue('shipper-address')}\n`;
-        fwb += `/${getValue('shipper-city')}\n`;
-        fwb += `/${getValue('shipper-country')}\n`;
-    }
-    
-    // Consignee
-    if (getValue('consignee-name')) {
-        fwb += `CNE\n/${getValue('consignee-name')}\n`;
-        fwb += `/${getValue('consignee-address')}\n`;
-        fwb += `/${getValue('consignee-city')}\n`;
-        fwb += `/${getValue('consignee-country')}\n`;
-    }
-    
-    return fwb;
-}
-
-function copyFWB() {
-    const fwbText = document.getElementById('fwb-message');
-    fwbText.select();
-    document.execCommand('copy');
-    alert('FWB message copied to clipboard!');
-}
-
-function printAWB() {
-    window.print();
 }
 
 // Notification system
 function showNotification(message, type = 'success') {
     const container = document.getElementById('notifications-container');
-    if (!container) {
-        console.error('Notifications container not found');
-        return;
-    }
+    if (!container) return;
     
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -765,7 +845,6 @@ function showNotification(message, type = 'success') {
     
     container.appendChild(notification);
     
-    // Auto remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {
             notification.style.animation = 'slideOut 0.3s ease-out';
@@ -778,152 +857,15 @@ function showNotification(message, type = 'success') {
     }, 5000);
 }
 
-// Debug function
-function debugDimensions() {
-    console.log('=== DEBUG DIMENSIONS ===');
-    console.log('Dimension lines found:', document.querySelectorAll('.dimension-line').length);
-    console.log('Total volume display:', document.getElementById('total-volume-display').textContent);
-    
-    const dimLines = document.querySelectorAll('.dimension-line');
-    dimLines.forEach((line, index) => {
-        const pieces = line.querySelector('.dim-pieces').value;
-        const length = line.querySelector('.dim-length').value;
-        const width = line.querySelector('.dim-width').value;
-        const height = line.querySelector('.dim-height').value;
-        console.log(`Line ${index + 1}:`, { pieces, length, width, height });
-    });
-    
-    console.log('Generated preview HTML:', generateDimensionLinesPreview());
-    console.log('Total volume:', getTotalDimensionVolume());
+// Placeholder functions for buttons
+function generateFWB() {
+    showNotification('FWB generation feature coming soon!', 'warning');
 }
 
-// Toggle functions for large tick buttons
-function toggleAsAgreed() {
-    asAgreedMode = !asAgreedMode;
-    document.getElementById('as-agreed-mode').checked = asAgreedMode;
-    updatePreview();
+function printAWB() {
+    window.print();
 }
 
-function toggleAsAgreedConversion() {
-    asAgreedConversionMode = !asAgreedConversionMode;
-    document.getElementById('as-agreed-conversion-mode').checked = asAgreedConversionMode;
-    updatePreview();
+function copyFWB() {
+    showNotification('Copy FWB feature coming soon!', 'warning');
 }
-
-// Fix for currency symbol visibility
-function fixCurrencySymbolVisibility() {
-    // Add padding to all currency input fields to make room for symbols
-    document.querySelectorAll('.currency-input-group input').forEach(input => {
-        if (!input.style.paddingLeft || input.style.paddingLeft === '12px') {
-            input.style.paddingLeft = '35px';
-        }
-    });
-}
-
-// Initialize currency symbol visibility fix
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(fixCurrencySymbolVisibility, 100);
-});
-
-// Fix currency symbol visibility
-function fixCurrencySymbolVisibility() {
-    document.querySelectorAll('.currency-input-group input').forEach(input => {
-        input.style.paddingLeft = '45px';
-    });
-}
-
-// Fix currency symbol visibility
-function fixCurrencySymbolVisibility() {
-    document.querySelectorAll('.currency-input-group input').forEach(input => {
-        input.style.paddingLeft = '45px';
-    });
-}
-
-// Toggle functions for large tick buttons
-function toggleAsAgreedConversion() {
-    asAgreedConversionMode = !asAgreedConversionMode;
-    const button = document.getElementById('as-agreed-conversion-btn');
-    
-    if (asAgreedConversionMode) {
-        button.classList.add('active');
-        button.innerHTML = '✓ AS AGREED';
-        // Clear conversion values
-        document.getElementById('conversion-rate').value = '';
-        document.getElementById('converted-amount').value = '';
-    } else {
-        button.classList.remove('active');
-        button.innerHTML = 'AS AGREED';
-        // Restore default conversion rate
-        document.getElementById('conversion-rate').value = '1.00';
-        updateCurrencyConversion();
-    }
-    
-    updatePreview();
-}
-
-// Update the updatePreview function to include AS AGREED for conversion
-// Replace the Currency Conversion section in updatePreview() with this:
-function updatePreview() {
-    // ... existing code ...
-    
-    preview.innerHTML = `
-        <!-- ... all existing preview content ... -->
-        
-        <!-- Currency Conversion -->
-        <div class="awb-field field-conversion-rate ${asAgreedConversionMode ? 'as-agreed' : ''}">
-            ${asAgreedConversionMode ? 'AS AGREED' : currentCurrencySymbol + ' ' + (getValue('conversion-rate') || '1.00')}
-        </div>
-        <div class="awb-field field-converted-amount ${asAgreedConversionMode ? 'as-agreed' : ''}">
-            ${asAgreedConversionMode ? 'AS AGREED' : destinationCurrencySymbol + ' ' + (getValue('converted-amount') || '0.00')}
-        </div>
-        
-        <!-- ... rest of preview content ... -->
-    `;
-}
-
-// Fix payment selection
-function updatePaymentSelection() {
-    showPrepaidInPreview = document.getElementById('show-prepaid').checked;
-    showCollectionInPreview = document.getElementById('show-collection').checked;
-    
-    // Update toggle button state based on checkboxes
-    const prepaidBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'prepaid\')"]');
-    const collectionBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'collection\')"]');
-    const bothBtn = document.querySelector('.payment-option[onclick="togglePaymentOption(\'both\')"]');
-    
-    if (showPrepaidInPreview && showCollectionInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
-        bothBtn.classList.add('active');
-        currentPaymentView = 'both';
-        document.getElementById('both-section').classList.add('active');
-        document.getElementById('prepaid-section').classList.remove('active');
-        document.getElementById('collection-section').classList.remove('active');
-    } else if (showPrepaidInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
-        prepaidBtn.classList.add('active');
-        currentPaymentView = 'prepaid';
-        document.getElementById('prepaid-section').classList.add('active');
-        document.getElementById('collection-section').classList.remove('active');
-        document.getElementById('both-section').classList.remove('active');
-    } else if (showCollectionInPreview) {
-        document.querySelectorAll('.payment-option').forEach(option => option.classList.remove('active'));
-        collectionBtn.classList.add('active');
-        currentPaymentView = 'collection';
-        document.getElementById('collection-section').classList.add('active');
-        document.getElementById('prepaid-section').classList.remove('active');
-        document.getElementById('both-section').classList.remove('active');
-    }
-    
-    updatePreview();
-}
-
-// Initialize the fixes when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // ... your existing initialization code ...
-    
-    // Fix currency symbol visibility
-    setTimeout(fixCurrencySymbolVisibility, 100);
-    
-    // Initialize payment selection
-    updatePaymentSelection();
-});

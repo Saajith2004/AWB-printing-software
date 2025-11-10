@@ -272,283 +272,268 @@
                 </div>
             </div>
 
-            <!-- CHARGES TAB -->
-            <div id="charges-tab" class="tab-content">
-                <div class="tab-header">
-                    <h3>Charges & Accounting</h3>
-                    <button class="clear-tab-btn" onclick="clearCurrentTab()">Clear This Tab</button>
-                    </div>
+                <!-- CHARGES TAB -->
+                    <div id="charges-tab" class="tab-content">
+                        <div class="tab-header">
+                            <h3>Charges & Accounting</h3>
+                            <button class="clear-tab-btn" onclick="clearCurrentTab()">Clear This Tab</button>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="currency-code">Currency</label>
-                        <select id="currency-code" onchange="updateCurrency()">
-                            <option value="USD">USD - US Dollar</option>
-                            <option value="EUR">EUR - Euro</option>
-                            <option value="SGD">SGD - Singapore Dollar</option>
-                            <option value="INR">INR - Indian Rupee</option>
-                            <option value="LKR">LKR - Sri Lankan Rupee</option>
-                            <option value="GBP">GBP - British Pound</option>
-                            <option value="JPY">JPY - Japanese Yen</option>
-                            <option value="AUD">AUD - Australian Dollar</option>
-                            <option value="CAD">CAD - Canadian Dollar</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="destination-currency">Destination Currency</label>
-                        <select id="destination-currency" onchange="updateCurrency()">
-                            <option value="USD">USD - US Dollar</option>
-                            <option value="EUR">EUR - Euro</option>
-                            <option value="SGD">SGD - Singapore Dollar</option>
-                            <option value="INR">INR - Indian Rupee</option>
-                            <option value="LKR">LKR - Sri Lankan Rupee</option>
-                            <option value="GBP">GBP - British Pound</option>
-                            <option value="JPY">JPY - Japanese Yen</option>
-                            <option value="AUD">AUD - Australian Dollar</option>
-                            <option value="CAD">CAD - Canadian Dollar</option>
-                        </select>
-                    </div>
-
-                    <div class="payment-toggle">
-                        <div class="payment-option active" onclick="togglePaymentOption('prepaid')">Prepaid</div>
-                        <div class="payment-option" onclick="togglePaymentOption('collection')">Collection</div>
-                        <!-- <div class="payment-option" onclick="togglePaymentOption('both')">Both</div> -->
-                    </div>
-
-                    <!-- Payment Selection Checkboxes -->
-                    <div class="payment-selection">
                         <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="show-prepaid" checked onchange="updatePaymentSelection()">
-                                <span class="checkmark"></span>
-                                Show Prepaid Charges in Preview
-                            </label>
+                            <label for="currency-code">Currency</label>
+                            <select id="currency-code" onchange="updateCurrency()">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="SGD">SGD - Singapore Dollar</option>
+                                <option value="INR">INR - Indian Rupee</option>
+                                <option value="LKR">LKR - Sri Lankan Rupee</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                            </select>
                         </div>
+
                         <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="show-collection" onchange="updatePaymentSelection()">
-                                <span class="checkmark"></span>
-                                Show Collection Charges in Preview
-                            </label>
+                            <label for="destination-currency">Destination Currency</label>
+                            <select id="destination-currency" onchange="updateCurrency()">
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                                <option value="SGD">SGD - Singapore Dollar</option>
+                                <option value="INR">INR - Indian Rupee</option>
+                                <option value="LKR">LKR - Sri Lankan Rupee</option>
+                                <option value="GBP">GBP - British Pound</option>
+                                <option value="JPY">JPY - Japanese Yen</option>
+                                <option value="AUD">AUD - Australian Dollar</option>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                            </select>
                         </div>
+
+                        <!-- Payment Type Selection -->
+                        <div class="payment-type-selection">
+                            <h4>Payment Type</h4>
+                            <div class="payment-type-toggle">
+                                <div class="payment-type-option active" onclick="selectPaymentType('prepaid')">
+                                    Prepaid
+                                </div>
+                                <div class="payment-type-option" onclick="selectPaymentType('collection')">
+                                    Collection
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prepaid Section -->
+                        <div id="prepaid-section" class="payment-section active">
+                            <div class="section-header">
+                                <h4>Prepaid Charges</h4>
+                                <button class="large-tick-btn" id="as-agreed-prepaid-btn" onclick="toggleAsAgreedPrepaid()">
+                                    AS AGREED
+                                </button>
+                            </div>
+                            <div class="charges-content">
+                                <div class="row">
+                                    <div class="form-group currency-input-group">
+                                        <label for="weight-charge-pp">Weight Charge</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-weight-charge-pp">$</span>
+                                            <input type="number" id="weight-charge-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group currency-input-group">
+                                        <label for="valuation-charge-pp">Valuation Charge</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-valuation-charge-pp">$</span>
+                                            <input type="number" id="valuation-charge-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group currency-input-group">
+                                        <label for="tax-pp">Tax</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-tax-pp">$</span>
+                                            <input type="number" id="tax-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group currency-input-group">
+                                        <label for="other-charges-agent-pp">Total Other Charges Due Agent</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-other-charges-agent-pp">$</span>
+                                            <input type="number" id="other-charges-agent-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="other-charges-carrier-pp">Total Other Charges Due Carrier</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-other-charges-carrier-pp">$</span>
+                                        <input type="number" id="other-charges-carrier-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="total-prepaid">Total Prepaid</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-total-prepaid">$</span>
+                                        <input type="text" id="total-prepaid" placeholder="0.00" readonly class="total-field">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Collection Section -->
+                        <div id="collection-section" class="payment-section">
+                            <div class="section-header">
+                                <h4>Collection Charges</h4>
+                                <button class="large-tick-btn" id="as-agreed-collection-btn" onclick="toggleAsAgreedCollection()">
+                                    AS AGREED
+                                </button>
+                            </div>
+                            <div class="charges-content">
+                                <div class="row">
+                                    <div class="form-group currency-input-group">
+                                        <label for="weight-charge-col">Weight Charge</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-weight-charge-col">$</span>
+                                            <input type="number" id="weight-charge-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group currency-input-group">
+                                        <label for="valuation-charge-col">Valuation Charge</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-valuation-charge-col">$</span>
+                                            <input type="number" id="valuation-charge-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group currency-input-group">
+                                        <label for="tax-col">Tax</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-tax-col">$</span>
+                                            <input type="number" id="tax-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group currency-input-group">
+                                        <label for="other-charges-agent-col">Total Other Charges Due Agent</label>
+                                        <div class="input-with-symbol">
+                                            <span class="currency-symbol" id="symbol-other-charges-agent-col">$</span>
+                                            <input type="number" id="other-charges-agent-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="other-charges-carrier-col">Total Other Charges Due Carrier</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-other-charges-carrier-col">$</span>
+                                        <input type="number" id="other-charges-carrier-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group currency-input-group">
+                                    <label for="cc-charges-dest">CC Charges in Dest. Currency</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-cc-charges-dest">Rs</span>
+                                        <input type="number" id="cc-charges-dest" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                    </div>
+                                </div> -->
+                                <div class="form-group currency-input-group">
+                                    <label for="charges-at-destination">Charges at Destination</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-charges-at-destination">Rs</span>
+                                        <input type="number" id="charges-at-destination" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="total-collection">Total Collection</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-total-collection">$</span>
+                                        <input type="text" id="total-collection" placeholder="0.00" readonly class="total-field">
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="total-collect-charges">Total Collect Charges</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-total-collect-charges">$</span>
+                                        <input type="text" id="total-collect-charges" placeholder="0.00" readonly class="total-field">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Currency Conversion Section -->
+                        <div class="currency-conversion">
+                            <h4>Currency Conversion</h4>
+                            <div class="row">
+                                <div class="form-group currency-input-group">
+                                    <label for="conversion-rate">Conversion Rate</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-conversion-rate">$</span>
+                                        <input type="number" id="conversion-rate" placeholder="1.00" step="0.01" value="1.00" oninput="updateCurrencyConversion()">
+                                    </div>
+                                </div>
+                                <div class="form-group currency-input-group">
+                                    <label for="converted-amount">CC Charges in Dest. Currency</label>
+                                    <div class="input-with-symbol">
+                                        <span class="currency-symbol" id="symbol-converted-amount">Rs</span>
+                                        <input type="text" id="converted-amount" placeholder="0.00" readonly class="total-field">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="as-agreed-toggle">
+                                <button class="large-tick-btn" id="as-agreed-conversion-btn" onclick="toggleAsAgreedConversion()">
+                                    AS AGREED
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Other sections remain the same -->
                         <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="as-agreed-mode" onchange="updateAsAgreedMode()">
-                                <span class="checkmark"></span>
-                                Show "AS AGREED" for all charges
-                            </label>
+                            <label for="value-carriage">Declared Value for Carriage (Box 13A)</label>
+                            <input type="text" id="value-carriage" placeholder="NVD" value="NVD">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="value-customs">Declared Value for Customs (Box 13B)</label>
+                            <input type="text" id="value-customs" placeholder="NCV" value="NCV">
                         </div>
                     </div>
 
-                    <!-- Prepaid Section -->
-                    <div id="prepaid-section" class="payment-content active">
-                        <div class="charges-section">
-                            <h4>Prepaid Charges</h4>
-                            <div class="row">
-                                <div class="form-group currency-input-group">
-                                    <label for="weight-charge-pp">Weight Charge</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-weight-charge-pp">$</span>
-                                        <input type="number" id="weight-charge-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
-                                    </div>
-                                </div>
-                                <div class="form-group currency-input-group">
-                                    <label for="valuation-charge-pp">Valuation Charge</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-valuation-charge-pp">$</span>
-                                        <input type="number" id="valuation-charge-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group currency-input-group">
-                                    <label for="tax-pp">Tax</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-tax-pp">$</span>
-                                        <input type="number" id="tax-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
-                                    </div>
-                                </div>
-                                <div class="form-group currency-input-group">
-                                    <label for="other-charges-agent-pp">Total Other Charges Due Agent</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-other-charges-agent-pp">$</span>
-                                        <input type="number" id="other-charges-agent-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="other-charges-carrier-pp">Total Other Charges Due Carrier</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-other-charges-carrier-pp">$</span>
-                                    <input type="number" id="other-charges-carrier-pp" placeholder="0.00" step="0.01" oninput="calculatePrepaidTotal()">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="total-prepaid">Total Prepaid</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-total-prepaid">$</span>
-                                    <input type="text" id="total-prepaid" placeholder="0.00" readonly class="total-field">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Collection Section -->
-                    <div id="collection-section" class="payment-content">
-                        <div class="charges-section">
-                            <h4>Collection Charges</h4>
-                            <div class="row">
-                                <div class="form-group currency-input-group">
-                                    <label for="weight-charge-col">Weight Charge</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-weight-charge-col">$</span>
-                                        <input type="number" id="weight-charge-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                    </div>
-                                </div>
-                                <div class="form-group currency-input-group">
-                                    <label for="valuation-charge-col">Valuation Charge</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-valuation-charge-col">$</span>
-                                        <input type="number" id="valuation-charge-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group currency-input-group">
-                                    <label for="tax-col">Tax</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-tax-col">$</span>
-                                        <input type="number" id="tax-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                    </div>
-                                </div>
-                                <div class="form-group currency-input-group">
-                                    <label for="other-charges-agent-col">Total Other Charges Due Agent</label>
-                                    <div class="input-with-symbol">
-                                        <span class="currency-symbol" id="symbol-other-charges-agent-col">$</span>
-                                        <input type="number" id="other-charges-agent-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="other-charges-carrier-col">Total Other Charges Due Carrier</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-other-charges-carrier-col">$</span>
-                                    <input type="number" id="other-charges-carrier-col" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="cc-charges-dest">CC Charges in Dest. Currency</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-cc-charges-dest">Rs</span>
-                                    <input type="number" id="cc-charges-dest" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="charges-at-destination">Charges at Destination</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-charges-at-destination">Rs</span>
-                                    <input type="number" id="charges-at-destination" placeholder="0.00" step="0.01" oninput="calculateCollectionTotal()">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="total-collection">Total Collection</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-total-collection">$</span>
-                                    <input type="text" id="total-collection" placeholder="0.00" readonly class="total-field">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="total-collect-charges">Total Collect Charges</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-total-collect-charges">$</span>
-                                    <input type="text" id="total-collect-charges" placeholder="0.00" readonly class="total-field">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Both Sections (Visible when Both is selected) -->
-                    <div id="both-section" class="payment-content">
-                        <div class="charges-section">
-                            <h4>Prepaid & Collection Charges</h4>
-                            <p>Both prepaid and collection charges will be displayed in the preview based on your selection above.</p>
-                        </div>
-                    </div>
-
-                    <div class="currency-conversion">
-                        <h4>Currency Conversion</h4>
-                        <div class="row">
-                            <div class="form-group currency-input-group">
-                                <label for="conversion-rate">Conversion Rate</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-conversion-rate">$</span>
-                                    <input type="number" id="conversion-rate" placeholder="1.00" step="0.01" value="1.00" oninput="updateCurrencyConversion()">
-                                </div>
-                            </div>
-                            <div class="form-group currency-input-group">
-                                <label for="converted-amount">CC Charges in Dest. Currency</label>
-                                <div class="input-with-symbol">
-                                    <span class="currency-symbol" id="symbol-converted-amount">Rs</span>
-                                    <input type="text" id="converted-amount" placeholder="0.00" readonly class="total-field">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="as-agreed-toggle">
-                            <button class="large-tick-btn" id="as-agreed-conversion-btn" onclick="toggleAsAgreedConversion()">
-                                AS AGREED
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Declared Values for Carriage -->
-
-                    <div class="form-group">
-                        <label for="value-carriage">Declared Value for Carriage (Box 13A)</label>
-                        <input type="text" id="value-carriage" placeholder="NVD" value="NVD">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="value-customs">Declared Value for Customs (Box 13B)</label>
-                        <input type="text" id="value-customs" placeholder="NCV" value="NCV">
-                    </div>
-
-                    <!-- Other Charges -->
-                    <!-- AWB -->
+                    <!-- AWB
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="AWB" value="AWB">
-                    </div>
-                    <!-- FEC -->
+                    </div> -->
+                    <!-- FEC
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="FEC" value="FEC">
                     </div>
-                    <!-- BFC -->
-                    <div class="form-group">
+                    BFC -->
+                    <!-- <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="BFC" value="BFC">
-                    </div>
-                    <!-- CGC -->
+                    </div> -->
+                    <!-- CGC 
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="CGC" value="CGC">
-                    </div>
-                    <!-- MYC -->
+                    </div> -->
+                    <!-- MYC
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="MYC" value="MYC">
-                    </div>
-                    <!-- DHC -->
+                    </div> -->
+                    <!-- DHC 
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="DHC" value="DHC">
-                    </div>
-                    <!-- SCC -->
+                    </div> -->
+                    <!-- SCC 
                     <div class="form-group">
                         <label for="other-charges">Other Charges</label>
                         <input type="text" id="other-charges" placeholder="SCC" value="SCC">
-                    </div>
+                    </div> -->
 
-                </div>
+                
 
             <!-- SPECIAL TAB -->
             <div id="special-tab" class="tab-content">
@@ -605,6 +590,9 @@
 
     <!-- Notifications Container -->
     <div id="notifications-container"></div>
+
+    <!-- Missing button for AS AGREED conversion -->
+    <button id="as-agreed-conversion-btn" style="display: none;"></button>
 
     <script src="script.js"></script>
 </body>
